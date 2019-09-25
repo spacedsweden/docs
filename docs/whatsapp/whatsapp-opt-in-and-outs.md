@@ -2,7 +2,7 @@
 title: "Opt-In-and-Outs"
 excerpt: "Read how to enable or disable users to receive business messages via WhatsApp via Sinch WhatsApp API."
 ---
-All Business initiated conversations via the Sinch WhatsApp Business API must start with an “Opt-In” by the user. This can be collected through any third party. For example in an SMS message, In-Line with a Web Form, in an Email, or even via a deep-link in print media.
+All Business initiated conversations via the Sinch WhatsApp Business API must start with an “Opt-In” by the user. This can be collected through any third party channel. For example in an SMS message, In-Line with a Web Form, in an Email, or even via a deep-link in print media.
 
 You can record a [opt-in](doc:whatsapp-opt-in-and-outs#section-opt-in) by the API call described below and once the “Opt-In” is recorded you’ll be able to message that customer via the Sinch WhatsApp Business API.
 
@@ -10,14 +10,10 @@ Businesses must provide a method by which customers may opt-out of receiving fut
 
 ## Opt-In
 
-
 Opt-in numbers to enable the receiving of business messages via WhatsApp.
 
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
-
 *Request Body Schema*  
--   application/json
+- application/json
 
 - The numbers that you wish to opt in, which allows the current bot to send messages to them.
 
@@ -140,9 +136,6 @@ Opt-in numbers to enable the receiving of business messages via WhatsApp.
 
 Opt-out numbers to prevent them from receiving messages from the business.
 
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
-
 *Request Body Schema*
 
 - application/json
@@ -218,10 +211,10 @@ Opt-out numbers to prevent them from receiving messages from the business.
 
 ### Request samples
 
-**POST**
+**DELETE**
 
 ```text
-/whatsapp/v1/{bot-id}/provision/optout
+/whatsapp/v1/{bot-id}/provision/optin
 ```
 
 #### Payload
