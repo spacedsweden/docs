@@ -13,6 +13,7 @@ Businesses must provide a method by which customers may opt-out of receiving fut
 Opt-in numbers to enable the receiving of business messages via WhatsApp.
 
 *Request Body Schema*  
+- POST /whatsapp/v1/{bot-id}/provision/optin
 - application/json
 
 - The numbers that you wish to opt in, which allows the current bot to send messages to them.
@@ -137,7 +138,7 @@ Opt-in numbers to enable the receiving of business messages via WhatsApp.
 Opt-out numbers to prevent them from receiving messages from the business.
 
 *Request Body Schema*
-
+- DELETE /whatsapp/v1/{bot-id}/provision/optin
 - application/json
 - The numbers that you wish to opt out, which prevents the current bot to send messages to them.
 
