@@ -12,33 +12,20 @@ Businesses must provide a method by which customers may opt-out of receiving fut
 
 Opt-in numbers to enable the receiving of business messages via WhatsApp.
 
-*Request Body Schema*  
+### Path
 - POST /whatsapp/v1/{bot-id}/provision/optin
-- application/json
 
-- The numbers that you wish to opt in, which allows the current bot to send messages to them.
+#### Path Parameters
 
-<div class="magic-block-html">
-      <div class="marked-table">
-       <table>
-         <thead>
-           <tr>
-             <th>Name</th>
-             <th>Description</th>
-             </tr>
-           </thead>
-         <tbody>
-           <tr class="row-odd">
-             <td>numbers <br>
-               <span class="req-red">required</span></td>
-             <td><span class="type-grey">Array of string, minimum 1 number</span> <br>
-               Array of phone numbers (msisdns).</td>
-           </tr>
-         </tbody>
-       </table>
-     </div>
-</div>
+| Name    | Type          | Description                                        |
+| ------- | :-----------: | :------------------------------------------------: |
+| bot-id  | string        | The bot identifier                                 |
 
+### Request Body - application/json
+
+| Name    | Type          | Description                                        |
+| ------- | :-----------: | :------------------------------------------------: |
+| numbers | array[string] | Array of phone numbers (msisdns), minimum 1 number |
 
 ### Responses
 
@@ -60,32 +47,6 @@ Opt-in numbers to enable the receiving of business messages via WhatsApp.
 | ------ | :-------: |
 | title  |   string  |
 | reason |   string  |
-
-
-*Path parameters*
-
-<div class="magic-block-html">
-      <div class="marked-table">
-       <table>
-       <thead>
-         <tr>
-           <th>Parameter</th>
-           <th>Description</th>
-           </tr>
-         </thead>
-         <tbody>
-           <tr class="odd">
-             <td align="left">bot-id
-               <span class="req-red">required</span>
-             </td>
-             <td align="left"><span class="type-grey">string</span>
-               The identifier of the bot that wishes to send messages.
-             </td>
-           </tr>
-         </tbody>
-       </table>
-     </div>
-</div>
 
 ### Request samples
 
@@ -137,9 +98,10 @@ Opt-in numbers to enable the receiving of business messages via WhatsApp.
 
 Opt-out numbers to prevent them from receiving messages from the business.
 
-*Request Body Schema*
+*Path*
 - DELETE /whatsapp/v1/{bot-id}/provision/optin
-- application/json
+
+*Request Body - application/json*
 - The numbers that you wish to opt out, which prevents the current bot to send messages to them.
 
 <div class="magic-block-html">
