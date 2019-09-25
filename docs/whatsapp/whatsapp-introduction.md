@@ -19,6 +19,8 @@ The Sinch WhatsApp API securely authenticates via a bot identifier and bearer to
 
 To be able to authenticate the access token needs to be passed. For all WhatsApp end-points it is required to set the [bearer token](https://oauth.net/2/bearer-tokens/) in the authorization HTTP header like: `Authorization: Bearer AbCdEf123456`. Where the string `"AbCdEf123456"` is the bearer authorization token.
 
+If no authentication header is present or if the bearer token is invalid, the API will respond with HTTP 401 Unauthorized.
+
 ## BearerAuth
 
 |                           |        |
