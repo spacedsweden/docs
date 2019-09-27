@@ -2,62 +2,23 @@
 title: "Callback"
 excerpt: "Get to know the callbacks that has been sent via WhatsApp."
 ---
-There are two different types of callbacks that are being sent back from the Sinch WhatsApp API. Namely statuses and notifications where statuses are updates on the message being sent, such as delivered, read or failed. Notifications are messages that the end users wants to send back to the bots which the bots can act upon. Please note that the callback section in this documentation is not an endpoint.
+A callback is a HTTP POST request with a notification made by the Sinch WhatsApp API to a URI of your choosing. The Sinch WhatsApp API expects the receiving server to respond with a response code within the `2xx Success` range. If no successful response is received then the API will either schedule a retry if the error is expected to be temporary or discard the callback if the error seems permanent. The first initial retry will happen 5 seconds after the first try. The next attempt is after 10 seconds, then after 20 seconds, after 40 seconds, after 80 seconds and so on, doubling on every attempt. The last retry will be at 81920 seconds (or 22 hours 45 minutes) after the initial failed attempt.
 
-**Message States**
+### Delivery report callback
 
-The message states below are status updates on sent messages.
+| State          | Description                                                                   |
+| -------------- | ----------------------------------------------------------------------------- |
+| `queued`       | Message has been received and queued by the Sinch WhatsApp API                |
+| `dispatched`   | Message has been dispatched by Sinch WhatsApp API to WhatsApp servers         |
+| `sent`         | Message has been sent by WhatsApp to end-user                                 |
+| `delivered`    | Message has been successfully delivered to end-user by WhatsApp               |
+| `read`         | Message has been read by the end-user in the WhatsApp application             |
+| `deleted`      | Message has been deleted or expired in the application                        |
+| `failed`       | Message has failed                                                            |
+| `no_opt_in`    | Message rejected by Sinch API as recipient is not registered to have opted in |
+| `no_capability`| Message rejected by the Sinch API as the recipient lacks WhatsApp capability  |
 
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-      <thead>
-        <tr>
-          <th>State</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>QUEUED</td>
-          <td>Message has been queued by Sinch WhatsApp API</td>
-        </tr>
-        <tr class="row-even">
-          <td>DISPATCHED</td>
-          <td>Message has been dispatched by Sinch WhatsApp API to WhatsApp</td>
-        </tr>
-        <tr class="row-odd">
-          <td>SENT</td>
-          <td>Message has been sent by WhatsApp to end-user</td>
-        </tr>
-        <tr class="row-even">
-          <td>DELIVERED</td>
-          <td>Message has been delivered to end-user by WhatsApp</td>
-        </tr>
-        <tr class="row-odd">
-          <td>READ</td>
-          <td>The message has been read by the end-user in the WhatsApp application</td>
-        </tr>
-        <tr class="row-even">
-          <td>DELETED</td>
-          <td>The message has been deleted in the application, e.g. templates expiring or <br> when the end-user manually deletes a message</td>
-        </tr>
-        <tr class="row-odd">
-          <td>NO_CAPABILITY</td>
-          <td>Sent message has been rejected by the Sinch API as the recipient lacks <br> WhatsApp capability</td>
-        </tr>
-        <tr class="row-even">
-          <td>NO_OPT_IN</td>
-          <td>Message rejected by Sinch API as recipient is not registered to have opted <br> in to receive business messages on WhatsApp from the sending bot</td>
-        </tr>
-        <tr class="row-odd">
-          <td>FAILED</td>
-          <td>Fail status, e.g. trying to send a non-template message outside of the <br> 24 hour customer care window will return this error</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+### Inbound message callback
 
 *Request Body Schema*  
 - application/json

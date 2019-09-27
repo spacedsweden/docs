@@ -29,6 +29,15 @@ If no authentication header is present or if the bearer token is invalid, the AP
 | HTTP Authorization Scheme | bearer |
 
 
+## HTTP Errors
+Responses with status `400 Bad Request` and `401 Unauthorized` will present a JSON object in the body explaining the error. It has the following structure:
+
+| Name      | Description                                                          | JSON Type |
+| --------- | -------------------------------------------------------------------- | --------- |
+| `message` | A error message describing the general error.                        | `String`  |
+| `details` | Human readable description of the error. Can be used for debugging.  | `String`  |
+
+
 ## Base URL
 
 > **Note**
