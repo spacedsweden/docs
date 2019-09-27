@@ -10,18 +10,18 @@ Individual characters used in the message determine the type of encoding that wi
 
 #### Basic Character Set
 
-You can send up to 160 characters in a single SMS message if all characters in your message are part of the GSM 7-bit character set: 
+You can send up to 160 characters in a single SMS message if all characters in your message are part of the GSM 7-bit character set:
 
 |      |       |      |     |     |     |     |       |
 |-- -  | ---   | ---  | --- | --- | --- | --- | --- --|
 | @    | Δ     | `SP` | 0   | ¡   | P   | ¿   | p     |
 | £    | _     | !    | 1   | A   | Q   | a   | q     |
-| $    | Φ     | “    | 2   | B   | R   | b   | r     |
+| $    | Φ     | "    | 2   | B   | R   | b   | r     |
 | ¥    | Γ     | #    | 3   | C   | S   | c   | s     |
 | è    | Λ     | ¤    | 4   | D   | T   | d   | t     |
 | é    | Ω     | %    | 5   | E   | U   | e   | u     |
 | ù    | Π     | &    | 6   | F   | V   | f   | v     |
-| ì    | Ψ     | ‘    | 7   | G   | W   | g   | w     |
+| ì    | Ψ     | '    | 7   | G   | W   | g   | w     |
 | ò    | Σ     | (    | 8   | H   | X   | h   | x     |
 | Ç    | Θ     | )    | 9   | I   | Y   | i   | y     |
 | `LF` | Ξ     | *    | :   | J   | Z   | j   | z     |

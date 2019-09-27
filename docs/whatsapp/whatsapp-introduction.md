@@ -12,7 +12,7 @@ This API specification covers the range of features available.
 
 > **Note**
 >
-> Try out the WhatsApp API live in our new tutorial here [WhatsApp Tutorial](/docs/send-your-first-whatsapp-message).
+> Try out the WhatsApp API live in our new tutorial here [WhatsApp Tutorial](doc:send-your-first-whatsapp-message).
 
 ## Authentication
 The Sinch WhatsApp API securely authenticates via a bot identifier and bearer token pair. During the initial client on boarding process, these will be provided by your account manager.
