@@ -18,7 +18,7 @@ This API exposes calling-related functionality in the Sinch dashboard.
 
 ### Methods
 ```text
-[GET]       /configuration/numbers/ 
+[GET]       /configuration/numbers/
 [POST]      /configuration/numbers/
 [GET]       /configuration/callbacks/applications/{applicationkey}
 [POST]      /configuration/callbacks/applications/{applicationkey}
@@ -238,7 +238,7 @@ This is a protected resource and requires an [application signed request](doc:au
 
 [UrlItem]
     string - primary
-    string - fallback 
+    string - fallback
 ```
 
 
@@ -249,7 +249,7 @@ This is a protected resource and requires an [application signed request](doc:au
 *Example*
 ```json
 {
-  "url" : { 
+  "url" : {
     "primary" : "http://primary.com",
       "fallback" : "http://fallback.com"
   }
@@ -292,7 +292,7 @@ Update callback URLs.
 
 ```json
 {
-  "url" : { 
+  "url" : {
     "primary" : "http://primary.com",
       "fallback" : "http://fallback.com"
   }
@@ -512,8 +512,8 @@ This is a protected resource and requires an [application signed request](doc:au
     identity - from
     identity - to
     string - domain
-    string - callId 
-    int - duration 
+    string - callId
+    int - duration
     string - status
     string - result
     string - reason
@@ -846,9 +846,10 @@ If **enableDice** is set to true and the application has a callback URL specifie
 
 **locale** specifies the language for the Text-to-speech message. Supported languages: \* en-US: English, United States \* en-AU: English, Australia \* en-CA: English, Canada \* en-GB: English, United Kingdom \* en-IN: English, India \* es-ES: Spanish, Spain \* es-MX: Spanish, Mexico \* es-CA : Spanish, Catalunya \* fr-FR: French, France \* fr-CA: French, Canada \* ja-JP: Japanese \* ko-KR: Korean \* pt-BR: Portuguese, Brazil \* pt-PT: Portuguese \* zn-CN: Chinese, China \* zh-HK: Chinese, Hong Kong \* zh-TW: Chinese, Taiwan \* da-DK: Danish \* de-DE: German \* fi-FI: Finish \* it-IT: Italian \* nb-NO: Norwegian \* nl-NL: Dutch \* pl-PL: Polish \* ru-RU: Russian \* sv-SE: Swedish
 
-**text** is the text that will be spoken in the text-to-speech message.
+**text** is the text that will be spoken in the text-to-speech message. Every applications default maximum characters allowed in text-to-speech  is 600 characters. Contact support if you wish this limit to be changed.
 
-**prompts** is an advanced alternative to to using “text”. You can then supply a “;”-separated list of prompts. Either prompt can be the name of a pre-recorded file or a text-to-speech string specified as “\#tts\[my text\]”. To upload and use pre-recorded files, you need to contact Sinch for support.
+
+**prompts** is an advanced alternative to using “text”. You can then supply a “;”-separated list of prompts. Either prompt can be the name of a pre-recorded file or a text-to-speech string specified as “\#tts\[my text\]”. To upload and use pre-recorded files, you need to contact Sinch for support. Every applications default maximum characters allowed per 'prompts'-command text-to-speech is 600 characters. Contact support if you wish this limit to be changed.
 
 *Example of text-to-speech callout*
 ```text
@@ -890,7 +891,7 @@ If **enableDice** is set to true and the application has a callback URL specifie
           "domain" : "pstn",
             "custom" : "customData",
               "locale" : "en-US",
-                "prompts" : "#tts[Hello, this is a synthesized message];myprerecordedfile",
+              "prompts" : "#tts[Hello, we will now play a pre-recorded file.];myprerecordedfile;#tts[We hope you liked listening to the file.]",
                   "enabledice" : true
     }
 }

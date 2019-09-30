@@ -26,9 +26,9 @@ This endpoint allows for the creation of a group.
       </thead>
       <tbody>
         <tr class="row-odd">
-          <td>subject <br>
+          <td>subject
             <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span> <br>
+          <td><span class="type-grey">string</span>
             Group subject as a string.</td>
         </tr>
       </tbody>

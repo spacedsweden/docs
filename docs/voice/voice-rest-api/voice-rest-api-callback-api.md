@@ -83,7 +83,7 @@ Instructions allow your application to play a message to participants given a pa
 
 **say** instruction is used to play a text-to-speech message to the end user. The message is provided in the *text* field.
 
-**text** is a string that contains the message to be played. Note that the text cannot be longer than 200 characters and that currently only English “en-US” is supported.
+**text** is a string that contains the message to be played. The default maximum length is 600 characters. To change this limit, please contact support.
 
 **locale** is specified with a language code according to ISO 639, a dash and a country code according to ISO 3166-1 alpha-2.
 
@@ -310,7 +310,7 @@ With the *runMenu* action, the user will start listening to an IVR menu. This me
 
 **id** is the identifier of a menu. One menu must always have the id “main”.
 
-**mainPrompt** is the main prompt that the user will hear upon entering this menu. It can be a text-to-speech or a pre-recorded message.
+**mainPrompt** is the main prompt that the user will hear upon entering this menu. It can be a text-to-speech or a pre-recorded message. The maximum length for the text-to-speech messages of applications length is by default 600 characters. To change this limit, please contact support.
 
 **options** show a set of different options that the user can trigger.
 
@@ -318,7 +318,7 @@ With the *runMenu* action, the user will start listening to an IVR menu. This me
 
 **action** indicates the action that will be taken if the user presses the pre-defined “dtmf” digit. It can either trigger a [PIE Event](#section-prompt-input-event-callback-pie-) with the “return” action, or it can navigate to another menu with the “menu” action.
 
-**repeatPrompt** is the prompt that will be repeatedly play to the user if the correct DTMF digit is not pressed.
+**repeatPrompt** is the prompt that will be repeatedly played for the user while waiting for a correct DTMF digit to be pressed. The maximum length for every applications text-to-speech length is by default 600 characters. To change this limit, please contact support.
 
 **repeats** is the number of times that the repeatPrompt will be played.
 

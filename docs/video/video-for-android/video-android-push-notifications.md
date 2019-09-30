@@ -27,13 +27,11 @@ Unlike GCM setup, FCM application developer does not need to manually add any pe
 ## Enable push notifications
 
 To enable push notifications, set the following capability before starting the Sinch client:
+
 ```java
 sinchClient.setSupportManagedPush(true);
 sinchClient.start();
 ```
-
-
-
 
 > **Note**    
 >
@@ -51,7 +49,72 @@ public void onMessageReceived(RemoteMessage remoteMessage){
     } else {
         // it's NOT Sinch message - process yourself
     }
+  }}
 ```
+
+### Explicit push token registration
+
+There are certain situations where it is either desirable to explicitly register push token and/or get assurance that the push token is indeed registered, e.g.:
+
+- The application is designed to receive calls only, and thus must register push token with the Sinch backend on the very first start, while it's desireable to terminate SinchClient as soon as the registration concludes (e.g. to free resources). In this situation, the application should be notified by a specific callback on the registration result.
+- The application detects that FCM push token is invalidated abd should be refreshed and re-registered with Sinch backend. Here, if SinchClient is in the running state, it would take care of re-registering of the push token iteself, otherwise, the application is responsible for re-registering.
+
+Both situation should be handled with using new **ManagedPush API** available via *Beta* interface:
+
+```java
+public ManagedPush getManagedPush(String username) {
+     // create client, but you don't need to start it
+     initClient(username);
+     // retrieve ManagedPush
+     return Beta.createManagedPush(mSinchClient);
+}
+```
+
+The former situation is showcased in *LoginActivity.java* in *sinch-rtc-sample-push* and *sinch-rtc-sample-video-push* sample applications. The activity implements *PushTokenRegistrationCallback* interface,
+
+```java
+public class LoginActivity extends BaseActivity implements SinchService.StartFailedListener, PushTokenRegistrationCallback {
+
+private void loginClicked() {
+       ...
+       if (!mPushTokenIsRegistered) {
+              getSinchServiceInterface().getManagedPush(userName).registerPushToken(this);
+       }
+       ...
+}
+
+@Override
+public void tokenRegistered() {
+       mPushTokenIsRegistered = true;
+       nextActivityIfReady();
+}
+
+@Override
+public void tokenRegistrationFailed(SinchError sinchError) {
+       mPushTokenIsRegistered = false;
+       Toast.makeText(this, "Push token registration failed - incoming calls can't be received!", Toast.LENGTH_LONG).show();
+}
+}
+```
+
+And the UI andvances to the next activity only when both conditions are met:
+- the SinchClient is started;
+- the push token is registered
+
+```java
+public class FcmListenerService extends FirebaseMessagingService {
+
+@Override
+public void onNewToken(String newToken) {
+// newToken supplied here is the token for `default` FCM project.
+// but the mere fact of receiving this callback informs the application
+// that ALL tokens should be re-acquired
+       instanceOfMyPushTokenRegistrationClass.registerPushToken();
+}
+}
+```
+
+Where `instanceOfMyPushTokenRegistrationClass.registerPushToken()` behavior is defined by the same pattern as in the previous situation - call the `ManagedPush.registerPushToken(final PushTokenRegistrationCallback callback)` and wait for callback to decide how to proceed depending on result.
 
 
 ## Receive and forward push notifications to a Sinch client
@@ -59,13 +122,13 @@ public void onMessageReceived(RemoteMessage remoteMessage){
 For more details regarding how to implement receiving a FCM downstream message, please see the [Android developer site for FCM](https://firebase.google.com/docs/cloud-messaging/android/receive).
 
 Once you have received the `RemoteMessage` in your `FirebaseMessagingService`, forward it to the Sinch client using the method `relayRemotePushNotificationPayload`.
+
 ```java
 // make sure you have created a SinchClient
 if (SinchHelpers.isSinchPushPayload(remoteMessage.getData())) {
     NotificationResult result = sinchClient.relayRemotePushNotificationPayload(remoteMessage.getData());
 }
 ```
-
 
 The returned `result` can be inspected to see whether the push was for an IM or a call using `result.isMessage()` and `result.isCall()`.
 
