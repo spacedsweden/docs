@@ -63,27 +63,6 @@ Depending on the type of callback the payload will be one of (as indicated by `t
 }
 ```
 
-
-##### Message dispatched as SMS fallback
-
-An SMS fallback was delivered since the RCS message was not delivered before it expired.
-```json
-{
-  "type": "status_report_rcs",
-  "message_id": "9cd91120-5e54-4d42-af22-1a042502ad97",
-  "at": "2017-10-31T13:06:30Z",
-  "status_report": {
-    "type": "fallback_dispatched",
-    "external_ref": "23esaaf9912s",
-    "revoked": true,
-    "reason": {
-      "type": "expired"
-    }
-  }
-}
-```
-
-
 ##### User agent taps a suggested reply chip
 ```json
 {
@@ -101,22 +80,18 @@ An SMS fallback was delivered since the RCS message was not delivered before it 
 
 ### Status reports
 
-Message status reports are sent whenever a message performs a state transition in the diagram below:
-![status_states.png](images/7a614d0-status_states.png)
-Message state transitions and flow diagram. Rectangles represent states communicated using `StatusReport` callback payloads. The logic in the flow diagram is controlled by various options passed to the `FallbackInfo` when sending a message, combined with events such as message expiry (see `ExpireInfo`), supplier errors, etc.
-
 #### Status descriptions
 
-| Status                         | Description                                                                                              |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------- |
-| queued                         | Message has entered the RCS REST API system. This is the initial state for a message.                    |
-| capability\_lookup\_dispatched | Message is awaiting capability lookup request dispatched with the RCS supplier.                          |
-| dispatched                     | Message was dispatched to the selected RCS supplier / operator platform.                                 |
-| fallback\_dispatched           | Message was not sent as RCS message, and a fallback SMS has been dispatched. See [SMS Fallback](doc:rcs-rest-sms-fallback). |
-| aborted                        | Message expired or was revoked, and no fallback SMS was requested.                                       |
-| failed                         | Message failed to be dispatched as RCS, and fallback SMS also failed.                                    |
-| delivered                      | Message was successfully delivered to the handset.                                                       |
-| displayed                      | Message was displayed on the handset.                                                                    |
+| Status                       | Description                                                                                                                                                         |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| queued                       | Message has entered the RCS REST API system. This is the initial state for a message.                                                                               |
+| aborted                      | Message expired or was revoked, and no fallback SMS was requested.                                                                                                  |
+| failed                       | Message failed to be dispatched as RCS, and fallback SMS also failed.                                                                                               |
+| delivered                    | Message was successfully delivered to the handset.                                                                                                                  |
+| displayed                    | Message was displayed on the handset.                                                                                                                               |
+| sms_failed                   | Message was not sent as RCS message, a fallback SMS has been dispatched and subsequently failed delivery. See [SMS Fallback](doc:rcs-rest-sms-fallback).            |
+| sms_delivered                | Message was not sent as RCS message, a fallback SMS has been dispatched and was subsequently delivered successfully. See [SMS Fallback](doc:rcs-rest-sms-fallback). |
+
 
 #### JSON Models
 
@@ -133,9 +108,6 @@ JSON Representation
   "status_report": {
     "type": enum(
       "queued",
-      "capability_lookup_dispatched",
-      "dispatched",
-      "fallback_dispatched",
       "aborted",
       "failed",
       "delivered",
@@ -190,9 +162,6 @@ JSON Representation
                     <dt>oneOf:</dt>
                     <dd><ul>
                         <li>object(<code class="interpreted-text" data-role="ref">StatusReportQueued</code>)</li>
-                        <li>object(<code class="interpreted-text" data-role="ref">StatusReportCapabilityLookupDispatched</code>)</li>
-                        <li>object(<code class="interpreted-text" data-role="ref">StatusReportDispatched</code>)</li>
-                        <li>object(<code class="interpreted-text" data-role="ref">StatusReportFallbackDispatched</code>)</li>
                         <li>object(<code class="interpreted-text" data-role="ref">StatusReportAborted</code>)</li>
                         <li>object(<code class="interpreted-text" data-role="ref">StatusReportFailed</code>)</li>
                         <li>object(<code class="interpreted-text" data-role="ref">StatusReportDelivered</code>)</li>
@@ -224,174 +193,6 @@ JSON Representation
 | ----- | ------ | ---------------------- | ------- | ----------- | -------- |
 | type  | string | Static string 'queued' | N/A     | N/A         | Yes      |
 
-##### StatusReportCapabilityLookupDispatched
-```json
-{
-  "type": "capability_lookup_dispatched"
-}
-```
-
-
-###### Fields
-
-| Field | Type   | Description                                    | Default | Constraints | Required |
-| ----- | ------ | ---------------------------------------------- | ------- | ----------- | -------- |
-| type  | string | Static string 'capability\_lookup\_dispatched' | N/A     | N/A         | Yes      |
-
-##### StatusReportDispatched
-```json
-{
-  "type": "dispatched"
-}
-```
-
-
-###### Fields
-
-| Field | Type   | Description                | Default | Constraints | Required |
-| ----- | ------ | -------------------------- | ------- | ----------- | -------- |
-| type  | string | Static string 'dispatched' | N/A     | N/A         | Yes      |
-
-##### StatusReportFallbackDispatched
-```json
-{
-  "type": "fallback_dispatched",
-  "external_ref": string,
-  "revoked": boolean,
-  "reason": {
-    "type": enum(
-      "rcs_unavailable",
-      "capability_unsupported",
-      "expired",
-      "agent_error",
-    ),
-    ... // type specific fields
-  }
-}
-```
-
-
-###### Fields
-
-<div class="magic-block-html">
-    <div class="marked-table">
-        <table>
-            <thead>
-            <tr class="header">
-                <th>Field</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Default</th>
-                <th>Constraints</th>
-                <th>Required</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="odd">
-                <td>type</td>
-                <td>string</td>
-                <td>Static string 'fallback_dispatched'</td>
-                <td>N/A</td>
-                <td>N/A</td>
-                <td>Yes</td>
-            </tr>
-            <tr class="even">
-                <td>external_ref</td>
-                <td>string</td>
-                <td>SMS HTTP REST API batch id after fallback</td>
-                <td>No</td>
-                <td>N/A</td>
-                <td>Yes</td>
-            </tr>
-            <tr class="odd">
-                <td>revoked</td>
-                <td>boolean</td>
-                <td>Has the RCS message been revoked?</td>
-                <td>No</td>
-                <td>N/A</td>
-                <td>Yes</td>
-            </tr>
-            <tr class="even">
-                <td>reason</td>
-                <td><dl>
-                    <dt>oneOf:</dt>
-                    <dd><ul>
-                        <li>object(<code class="interpreted-text" data-role="ref">FallbackReasonRcsUnavailable</code>)</li>
-                        <li>object(<code class="interpreted-text" data-role="ref">FallbackReasonCapabilityUnsupported</code>)</li>
-                        <li>object(<code class="interpreted-text" data-role="ref">FallbackReasonExpired</code>)</li>
-                        <li>object(<code class="interpreted-text" data-role="ref">FallbackReasonAgentError</code>)</li>
-                    </ul>
-                    </dd>
-                </dl></td>
-                <td>The reason why the fallback occurred, always based on one of the provided fallback conditions</td>
-                <td>No</td>
-                <td>N/A</td>
-                <td>Yes</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-##### FallbackReasonRcsUnavailable
-```json
-{
-  "type": "rcs_unavailable"
-}
-```
-
-
-###### Fields
-
-| Field | Type   | Description                      | Default | Constraints | Required |
-| ----- | ------ | -------------------------------- | ------- | ----------- | -------- |
-| type  | string | Static string 'rcs\_unavailable' | N/A     | N/A         | Yes      |
-
-##### FallbackReasonCapabilityUnsupported
-```json
-{
-  "type": "capability_unsupported"
-}
-```
-
-
-###### Fields
-
-| Field | Type   | Description                             | Default | Constraints | Required |
-| ----- | ------ | --------------------------------------- | ------- | ----------- | -------- |
-| type  | string | Static string 'capability\_unsupported' | N/A     | N/A         | Yes      |
-
-##### FallbackReasonExpired
-```json
-{
-  "type": "expired"
-}
-```
-
-
-###### Fields
-
-| Field | Type   | Description             | Default | Constraints | Required |
-| ----- | ------ | ----------------------- | ------- | ----------- | -------- |
-| type  | string | Static string 'expired' | N/A     | N/A         | Yes      |
-
-##### FallbackReasonAgentError
-```json
-{
-  "type": "agent_error",
-  "code": integer,
-  "reason": string
-}
-```
-
-
-###### Fields
-
-| Field  | Type    | Description                                    | Default | Constraints | Required |
-| ------ | ------- | ---------------------------------------------- | ------- | ----------- | -------- |
-| type   | string  | Static string 'agent\_error'                   | N/A     | N/A         | Yes      |
-| code   | integer | Error code of agent error causing the fallback | N/A     | N/A         | Yes      |
-| reason | string  | Descriptive message of why the message failed  | N/A     | N/A         | Yes      |
 
 ##### StatusReportAborted
 ```json
@@ -422,16 +223,35 @@ JSON Representation
 }
 ```
 
-
 ###### Fields
 
-| Field   | Type    | Description                                    | Default | Constraints | Required |
-| ------- | ------- | ---------------------------------------------- | ------- | ----------- | -------- |
-| type    | string  | Static string 'failed'                         | N/A     | N/A         | Yes      |
-| revoked | boolean | Has the RCS message been revoked?              | No      | N/A         | Yes      |
-| expired | boolean | Has the RCS message been expired?              | No      | N/A         | Yes      |
-| code    | integer | Error code of agent error causing the fallback | No      | N/A         | Yes      |
-| reason  | string  | Descriptive message of why the message failed  | No      | N/A         | Yes      |
+| Field   | Type    | Description                                   | Default | Constraints | Required |
+| ------- | ------- | --------------------------------------------- | ------- | ----------- | -------- |
+| type    | string  | Static string 'failed'                        | N/A     | N/A         | Yes      |
+| revoked | boolean | Has the RCS message been revoked?             | No      | N/A         | Yes      |
+| expired | boolean | Has the RCS message been expired?             | No      | N/A         | Yes      |
+| code    | integer | Error code of agent error causing the failure | No      | N/A         | Yes      |
+| reason  | string  | Descriptive message of why the message failed | No      | N/A         | Yes      |
+
+###### Error code values
+
+| Code | Description                                                                                 |
+| :--: | ------------------------------------------------------------------------------------------- |
+|   1  | An internal error occurred in the gateway                                                   |
+|   2  | The mobile subscriber device was reported to have no RCS capabilities                       |
+|   3  | The mobile subscriber device does not support the capabilities required to send the message |
+|   4  | The operator has barred this chatbot from this mobile subscriber                            |
+|   5  | The operator has determined that this mobile subscriber number cannot be found              |
+|   6  | Uploading of media to supplier failed                                                       |
+|   7  | The operator reported a delivery failure asynchronously                                     |
+|   8  | The API request was not formatted correctly                                                 |
+|   9  | No provisioned supplier could be found to service request                                   |
+|  10  | The requested supplier has not been provisioned                                             |
+|  11  | The supplier reported a systems error                                                       |
+|  12  | The throttle limit has been reached                                                         |
+
+
+
 
 ##### StatusReportDelivered
 ```json

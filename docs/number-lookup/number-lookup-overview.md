@@ -6,7 +6,7 @@ The core functionality of the Number Lookup Service is to provide information ab
 
 In some countries information is accessible via national MNP databases and in some markets the only way to get information about a certain MSISDN is to query the HLR of the network the subscriber is connected to.
 
-To provide data of highest quality we have created a Number Lookup service that combines data sourced directly from local number portability databases with an extensive global HLR coverage powered by our MNO partners. The service is built on a true carrier grade platform developed by our sister company Symsoft (www.symsoft.com), ensuring excellent performance in terms of availability, throughput and latency. Just like all Sinch’s services the Number Lookup service is fully redundant. Our Number Lookup service is accessible via two interfaces:
+To provide data of highest quality we have created a Number Lookup service that combines data sourced directly from local number portability databases with an extensive global HLR coverage powered by our MNO partners. The service is built on a true carrier grade platform developed by our Operator division, ensuring excellent performance in terms of availability, throughput and latency. Just like all Sinch’s services the Number Lookup service is fully redundant. Our Number Lookup service is accessible via two interfaces:
 > - ENUM
 > - HTTP/HTTPS
 

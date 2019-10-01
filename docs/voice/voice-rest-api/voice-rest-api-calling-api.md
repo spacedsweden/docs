@@ -673,7 +673,7 @@ This is a protected resource and requires an [application signed request](doc:au
 This is a protected resource and requires an [application signed request](doc:authorization#section-application-signed-request) or [basic auth](doc:authorization#section-basic-authorization).
 
 ## Conference and Text-To-Speech Callouts
-R
+
 **\[POST\] /callouts**
 
 Requests a call to be initiated from the server

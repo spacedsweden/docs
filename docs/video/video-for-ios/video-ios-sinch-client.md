@@ -6,7 +6,7 @@ The *SINClient* is the Sinch SDK entry point. It is used to configure the userâ€
 
 ## Creating the *SINClient*
 
-Set up the client and its delegate (*SINClientDelegate*, see [Reference](reference/html/Protocols/SINClientDelegate.html) documentation).
+Set up the client and its delegate (*SINClientDelegate*, see [Reference](http://download.sinch.com/docs/iOS/latest/reference/html/Protocols/SINClientDelegate.html) documentation).
 ```objectivec
 #import <Sinch/Sinch.h>
 
@@ -22,7 +22,7 @@ The *Application Key* and *Application Secret* are obtained from the Sinch Devel
 
 ## Specifying capabilities
 
-The SINClient can be configured to enable / disable certain functionality. Please see the [Reference](reference/html/Protocols/SINClient.html) for details.
+The SINClient can be configured to enable / disable certain functionality. Please see the [Reference](http://download.sinch.com/docs/iOS/latest/reference/html/Protocols/SINClient.html) for details.
  The following example shows how to setup the client with both voice calling and instant messaging enabled, and using [push notifications](doc:voice-ios-local-and-remote-push-notifications).
 ```objectivec
 // Specify the client capabilities.

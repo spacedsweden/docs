@@ -33,14 +33,14 @@ For more information please check our documentation:
 /docs/voice/ [here](doc:voice-introduction)
 
 <h3>Sinch REST API documentation update 20160113</h3>
-This release introduces the ability to create interactive IVRs in your voice application. For information on how to do that, check out the [runMenu](doc:voice-rest-api-callback#section-runmenu) action in the Callback API documentation section. Input from the user during an IVR menu can be sent to your backend through a new callback event, the Prompt Input Event \<PIE\> (PIE).
+This release introduces the ability to create interactive IVRs in your voice application. For information on how to do that, check out the [runMenu](doc:voice-rest-api-callback-api#section-runmenu) action in the Callback API documentation section. Input from the user during an IVR menu can be sent to your backend through a new callback event, the Prompt Input Event \<PIE\> (PIE).
 
 We have also released a number of APIs to manage your numbers and your callback URLs for Voice. More information can be found here \<calling-api\>.
 
 <h3>Sinch REST API documentation update 20151124</h3>
 With this release, the Conference Callout API supports the parameter enableACE, which allows the ACE event to be sent towards the developer’s backend.
 
-For more information please check the documentation [callouts](doc:voice-rest-api-calling-api#section-Conference-and-Text-To-Speech-Callouts).
+For more information please check the documentation [callouts](doc:voice-rest-api-calling-api#section-conference-and-text-to-speech-callouts).
 
 <h3>Sinch REST API documentation update 20151105</h3>
 This release introduces greater granularity in the Verification results and reasons why verification requests did not succeed.
@@ -68,11 +68,8 @@ Added documentation on how to administer voice and SMS numbers through REST APIs
 Improved explanations on restrictions for the SMS API. Also fixed a problem with a character that was ommited in the Authorization signature creation during the last documentation update.
 
 <h3>Sinch REST API documentation update 20150521</h3>
-The Sinch documentation has been restructured and is now split into products:
+The Sinch documentation has been restructured and is now split into products.
 
-[/docs/overview/](/docs/overview/)
-
- 
 
 **Verification:**
 
@@ -126,7 +123,7 @@ This release introduces the support of sending SMS in a wide range of countries
 <h3>Sinch REST API Documentation update 20141112</h3>
 This release introduces these new features and changes:
 
-> 1. [Incoming Call Event (ICE)](#section-incoming-call-event-callback-ice-) - The Incoming Call Event is now also supported to connect App-App calls. A new action is supported for connecting app-app calls, called ConnectMXP.
+> 1. [Incoming Call Event (ICE)](doc:voice-rest-api-callback-api#section-incoming-call-event-callback-ice-) - The Incoming Call Event is now also supported to connect App-App calls. A new action is supported for connecting app-app calls, called ConnectMXP.
 >
 > 2. [authorization](doc:verification-rest-callback-api#section-authorization) - Signing requests with “Session” scheme is no longer supported.
 >

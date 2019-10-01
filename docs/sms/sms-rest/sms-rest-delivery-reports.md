@@ -29,20 +29,20 @@ These are defined [here](doc:sms-other-cloud-smpp#section-error-codes).
 
 In addition to these standard error codes, the REST API provides an additional set of error codes, all within the 4xx range (vendor specific errors in the range of 0x400 to 0x4FF as referenced in the SMPP specification). These are listed below:
 
-| Status Code (Hex) | Name                         | Status     | Description                                                                                                                |
-|-- -               | ---                          | ---        | ---                                                                                                                      --|
-| 400               | Queued                       | Queued     | Message is queued within REST API system and will be dispatched according to the rate of the account.                      |
-| 401               | Dispatched                   | Dispatched | Message has been dispatched to SMSC.                                                                                       |
-| 402               | Message unroutable           | Aborted    | SMSC rejected message. Retrying is likely to cause the same error.                                                         |
-| 403               | Internal error               | Aborted    | An unexpected error caused the message to fail.                                                                            |
-| 404               | Temporary delivery failure   | Aborted    | Message failed because of temporary delivery failure. Message can be retried.                                              |
+| Status Code (Hex) | Name                         | Status     | Description                                                                                                                         |
+| ----------------- | ---------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 400               | Queued                       | Queued     | Message is queued within REST API system and will be dispatched according to the rate of the account.                               |
+| 401               | Dispatched                   | Dispatched | Message has been dispatched to SMSC.                                                                                                |
+| 402               | Message unroutable           | Aborted    | SMSC rejected message. Retrying is likely to cause the same error.                                                                  |
+| 403               | Internal error               | Aborted    | An unexpected error caused the message to fail.                                                                                     |
+| 404               | Temporary delivery failure   | Aborted    | Message failed because of temporary delivery failure. Message can be retried.                                                       |
 | 405               | Unmatched Parameter          | Aborted    | One or more parameters in the message body has no mapping for this recipient. See [Parameterization](doc:sms-rest-parameterization) |
-| 406               | Internal Expiry              | Aborted    | Message was expired before reaching SMSC. This may happen if the expiry time for the message was very short.               |
-| 407               | Canceled                     | Aborted    | Message was canceled by user before reaching SMSC.                                                                         |
-| 408               | Internal Reject              | Aborted    | SMSC rejected the message. Retrying is likely to cause the same error.                                                     |
-| 409               | Price threshold exceeded     | Aborted    | Message failed as the price of the message exceeds the defined threshold.                                                  |
-| 410               | Unmatched default originator | Aborted    | No default originator exists/configured for this recipient when sending message without originator.                        |
-| 411               | Exceeded parts limit         | Aborted    | Message failed as the number of message parts exceeds the defined max number of message parts.                             |
+| 406               | Internal Expiry              | Aborted    | Message was expired before reaching SMSC. This may happen if the expiry time for the message was very short.                        |
+| 407               | Canceled                     | Aborted    | Message was canceled by user before reaching SMSC.                                                                                  |
+| 408               | Internal Reject              | Aborted    | SMSC rejected the message. Retrying is likely to cause the same error.                                                              |
+| 410               | Unmatched default originator | Aborted    | No default originator exists/configured for this recipient when sending message without originator.                                 |
+| 411               | Exceeded parts limit         | Aborted    | Message failed as the number of message parts exceeds the defined max number of message parts.                                      |
+| 412               | Unprovisioned region         | Aborted    | SMSC rejected the message. The account has not been provisioned for this region.                                                    |
 
 > **Note**    
 >

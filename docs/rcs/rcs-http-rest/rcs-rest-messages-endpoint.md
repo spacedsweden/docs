@@ -137,6 +137,25 @@ curl https://api.clxcommunications.com/rcs/v1/my-agent-id/messages \
   }'
 ```
 
+###### Send video message
+
+```curl
+curl https://api.clxcommunications.com/rcs/v1/my-agent-id/messages \
+   -H "Content-Type: application/json" \
+   -H "Authorization: Bearer zIMEJGfwD4oJ4qObPPjwZxwiP5cKARXRJpt9Kf6GSv7uOesvRV" \
+   -d '{
+       "message_id": "41a54db6-6abf-48dd-8a2b-63890981d80d",
+       "to": "46555123456",
+       "message": {
+           "type": "file",
+           "thumbnail": {
+               "mime_type": "video/mpeg",
+               "file_size": 1234,
+               "file_uri": "http://example.com/my_video.mp4"
+           }
+       }
+   }'
+```
 
 ###### Send text message and suggestions
 
@@ -177,6 +196,17 @@ curl https://api.clxcommunications.com/rcs/v1/my-agent-id/messages \
                   "type": "dial_phone_number",
                   "phone_number": "+46555123456"
               }
+          },
+          {
+           "type": "action",
+           "display_text": "Watch our video",
+           "postback": {
+                "data": "feed1169-8500-4b66-a65c-5986b8ae59f7_VIDEO"
+           },
+           "action": {
+               "type": "open_url",
+                "url": "https://www.youtube.com/watch?feature=player_embedded&v=xvCMt14bWtk"
+           }
           }
       ]
   }'
@@ -764,11 +794,12 @@ JSON Representation
 
 ###### Fields
 
-| Field         | Type               | Description                                                                    | Default | Constraints                | Required |
-| ------------- | ------------------ | ------------------------------------------------------------------------------ | ------- | -------------------------- | -------- |
-| type          | string             | Static string 'reply'                                                          | N/A     | N/A                        | Yes      |
-| display\_text | string             | The text that will be shown in the suggested reply                             | No      | MinLength: 1 MaxLength: 25 | Yes      |
-| postback      | object(`Postback`) | Optional data that will be sent back to the agent when the user taps the reply | No      | N/A                        | No       |
+| Field        | Type               | Description                                                            | Default | Constraints                | Required |
+| ------------ | ------------------ | ---------------------------------------------------------------------- | ------- | -------------------------- | -------- |
+| type         | string             | Static string 'reply'                                                  | N/A     | N/A                        | Yes      |
+| display_text | string             | The text that will be shown in the suggested reply                     | No      | MinLength: 1 MaxLength: 25 | Yes      |
+| postback     | object(`Postback`) | Data that will be sent back to the agent when the user taps the action | No      | N/A                        | No       |
+
 
 ##### SuggestedAction
 
@@ -829,7 +860,7 @@ JSON Representation
             <tr class="odd">
                 <td>postback</td>
                 <td>object(<code class="interpreted-text" data-role="ref">Postback</code>)</td>
-                <td>Optional data that will be sent back to the agent when the user taps the action</td>
+                <td>Data that will be sent back to the agent when the user taps the action</td>
                 <td>No</td>
                 <td>N/A</td>
                 <td>No</td>
