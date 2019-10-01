@@ -9,8 +9,8 @@ A callback from the Sinch WhatsApp API will always have the following structure:
 |Name          | Description                    | JSON Type     |
 |--------------|--------------------------------|---------------|
 |type          | Will always be `whatsapp`      | String        |
-|statuses      | Array of delivery reports      | Array[Object] |
-|notifications | Array of inbound messages      | Array[Object] |
+|statuses      | List of delivery reports      | Object array  |
+|notifications | List of inbound messages      | Object array  |
 
 ### Delivery report callback
 
@@ -140,19 +140,19 @@ The format is as follows:
 |Name       | Description                                                        | JSON Type     |
 |-----------|------------------------------------------------------------------- |---------------|
 |type       | Fixed value `contacts`                                             | String        |
-|contacts   | Array of contact objects                                           | Array[Object] |
+|contacts   | List of contact cards                                              | Object array  |
 
-**Contact object**
+**Contact card**
 
 |Name       | Description                                                        | JSON Type     |
 |-----------|------------------------------------------------------------------- |---------------|
-|addresses  | Array of contact address(e)                                        | Array[Object] |
+|addresses  | List of contact address(e)                                         | Object array  |
 |birthday   | Contact's birthday, YYYY-MM-DD formatted string                    | String        |
-|email      | Array of contact email address(es)                                 | Array[Object] |
-|name       | Array of contact full name information                             | Array[Object] |
-|org        | Array of contact organization information                          | Array[Object] |
-|phones     | Array of contact phone number(s)                                   | Array[Object] |
-|urls       | Array of contact URL(s)                                            | Array[Object] |
+|email      | List of of contact email address(es)                               | Object array  |
+|name       | List of contact full name information                              | Object array  |
+|org        | List of contact organization information                           | Object array  |
+|phones     | List of contact phone number(s)                                    | Object array  |
+|urls       | List of contact URL(s)                                             | Object array  |
 
 **Contact address**
 
