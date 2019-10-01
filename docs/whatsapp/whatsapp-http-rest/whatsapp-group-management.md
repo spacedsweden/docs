@@ -111,8 +111,6 @@ The response body is a JSON object with the following parameters:
 | members       | Array of msisdns for members in the group | String array |
 | subject       | Subject of the group                      | String       |
 
-Sample:
-
 ```json
 {
     "admins": [

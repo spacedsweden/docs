@@ -86,15 +86,11 @@ in a region where your bot does not reside. The body is a JSON object described 
 
 ### Opt out sample
 
-```shell
-curl -X DELETE \
-     -H "Authorization: Bearer {token}" \
-     -H "Content-Type: application/json"  -d '
-      {
-          "numbers": [
-              "46732001122",
-              "46732002244"
-          ]
-      }' \
-  "https://us1.whatsapp.api.sinch.com/whatsapp/v1/{bot-id}/provision/optin"
+```json
+{
+  "numbers": [
+    "46732001122",
+    "46732002244"
+  ]
+}
 ```

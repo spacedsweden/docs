@@ -65,11 +65,11 @@ The format is as follows:
 |from        | MSISDN of the user sending the message                                      | String    |
 |in_group    | Identifier of a group if this message is sent to one of your owned groups   | String    |
 |to          | The identifier of the receiving bot                                         | String    |
-|replying_to | A context object, present only if the user is replying to a specific thread | String    |
+|replying_to | A context object, present only if the user is replying to a specific thread | Object    |
 |message_id  | Generated message id for the inbound message                                | String    |
 |message     | Message object describing the inbound message                               | Object    |
 
-#### Context
+**Context**
 
 |Name        | Description                                                                 | JSON Type |
 |------------|---------------------------------------------------------------------------- |-----------|

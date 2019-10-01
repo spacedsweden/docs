@@ -6,14 +6,13 @@ excerpt: "Read how to discover if your users are capable of receiving messages v
 ## Capability endpoint
 
 The Sinch WhatsApp API offers an endpoint where you can request the WhatsApp capability status for a
-specific number or numbers.
+list of numbers.
 
 #### Request
 
 `GET whatsapp/v1/{bot-id}/capability`
 
 JSON object parameters:
-
 
 | Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
 | ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
@@ -35,6 +34,21 @@ The response body is a JSON object with the following parameters:
 |------------|------------------------------------ |--------------|
 |msisdn      | Msisdn                              | String       |
 |capable     | WhatsApp capability status          | boolean      |
+
+```json
+{
+  "capabilities": [
+    {
+      "msisdn":"46732001122",
+      "capable": true
+    },
+    {
+      "msisdn":"46732002244",
+      "capable": false
+    }
+  ]
+}
+```
 
 `400 Bad Request`
 
