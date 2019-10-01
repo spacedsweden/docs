@@ -8,212 +8,90 @@ You can record a [opt-in](doc:whatsapp-opt-in-and-outs#section-opt-in) by the AP
 
 Businesses must provide a method by which customers may opt-out of receiving future messages from your organization. The [opt-out](doc:whatsapp-opt-in-and-outs#section-opt-out) should be handled using the API call below.
 
-## Opt-In
+## Opt-In endpoint
 
-Opt-in numbers to enable the receiving of business messages via WhatsApp.
+Opt-in numbers to enable the receiving of business messages via WhatsApp. Opting in already opted in numbers
+would be ignored but not rejected.
 
-### Path
-- POST /whatsapp/v1/{bot-id}/provision/optin
+#### Request
 
-#### Path Parameters
+`POST whatsapp/v1/{bot-id}/provision/optin`
 
-| Name    | Type          | Description                                        |
-| ------- | :-----------: | :------------------------------------------------: |
-| bot-id  | string        | The bot identifier                                 |
+JSON object parameters:
 
-### Request Body - application/json
 
-| Name    | Type          | Description                                        |
-| ------- | :-----------: | :------------------------------------------------: |
-| numbers | array[string] | Array of phone numbers (msisdns), minimum 1 number |
+| Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
+| ------- | :------------------------------: | :----------: | :--------: | :-------------------: | :------: |
+| numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
 
-### Responses
+#### Responses
 
-**200 OK**
-*Response schema: application/json*
+`200 OK`
 
-**400 Bad request**
-*Response schema: application/json*
+`400 Bad Request`
 
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
+There was an error with your request. The body is a JSON object described [here](doc:whatsapp-introduction#section-http-errors)
 
-**401 Unauthorized bot**
-*Response schema: application/json*
+`401 Unauthorized`
 
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described [here](doc:whatsapp-introduction#section-http-errors)
 
-### Request samples
+### Opt in sample
 
-**POST**
-
-```text
-/whatsapp/v1/{bot-id}/provision/optin
-```
-
-**Payload**
-
-```json
-{
-  "numbers":[
-    "46732001122",
-    "46732002244",
-    "46732003366"
-  ]
-}
-```
-
-### Response samples
-
-**200 OK**
-
-```text
-<empty request body>
-```
-
-**400 Bad request**
-
-```json
-{
-  "message":"Validation error",
-  "reason":"Field [numbers] can not be empty."
-}
-```
-
-**401 Unauthorized bot**
-
-```json
-{
-  "message":"401",
-  "reason":"Unauthorized bot"
-}
+```shell
+curl -X POST \
+     -H "Authorization: Bearer {token}" \
+     -H "Content-Type: application/json"  -d '
+      {
+          "numbers": [
+              "46732001122",
+              "46732002244"
+          ]
+      }' \
+  "https://us1.whatsapp.api.sinch.com/whatsapp/v1/{bot-id}/provision/optin"
 ```
 
 ## Opt-Out
 
 Opt-out numbers to prevent them from receiving messages from the business.
 
-*Path*
-- DELETE /whatsapp/v1/{bot-id}/provision/optin
+#### request
 
-*Request Body - application/json*
-- The numbers that you wish to opt out, which prevents the current bot to send messages to them.
+`DELETE whatsapp/v1/{bot-id}/provision/optin`
+`POST whatsapp/v1/{bot-id}/provision/optout`
 
-<div class="magic-block-html">
-      <div class="marked-table">
-       <table>
-       <thead>
-         <tr>
-           <th>Name</th>
-           <th>Description</th>
-           </tr>
-         </thead>
-         <tbody>
-           <tr class="row-odd">
-             <td>numbers
-               <span class="req-red">required</span></td>
-             <td><span class="type-grey">Array of string, minimum 1 number</span>
-               Array of phone numbers (msisdns).</td>
-           </tr>
-         </tbody>
-       </table>
-     </div>
-</div>
-
-### Responses
-
-**200 OK**
-*Response schema: application/json*
-
-**400 Bad request**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**401 Unauthorized bot**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-*Path parameters*
+JSON object parameters:
 
 
-<div class="magic-block-html">
-      <div class="marked-table">
-       <table>
-       <thead>
-         <tr>
-           <th>Parameter</th>
-           <th>Description</th>
-           </tr>
-         </thead>
-         <tbody>
-           <tr class="odd">
-             <td align="left">bot-id
-               <span class="req-red">required</span>
-             </td>
-             <td align="left"><span class="type-grey">string</span>
-               The identifier of the bot that wishes to send messages.
-             </td>
-           </tr>
-         </tbody>
-       </table>
-     </div>
-</div>
+| Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
+| ------- | :------------------------------: | :----------: | :--------: | :-------------------: | :------: |
+| numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
 
-### Request samples
+#### Responses
 
-**DELETE**
+`200 OK`
 
-```text
-/whatsapp/v1/{bot-id}/provision/optin
-```
+`400 Bad Request`
 
-#### Payload
+There was an error with your request. The body is a JSON object described [here](doc:whatsapp-introduction#section-http-errors)
 
-```json
-{
-  "numbers":[
-    "46732001122",
-    "46732002244",
-    "46732003366"
-  ]
-}
-```
+`401 Unauthorized`
 
-### Response samples
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described [here](doc:whatsapp-introduction#section-http-errors)
 
-**200 OK**
+### Opt out sample
 
-```text
-<empty request body>
-```
-
-**400 Bad request**
-
-```json
-{
-  "message":"Validation error",
-  "reason":"Field [numbers] can not be empty."
-}
-```
-
-**401 Unauthorized bot**
-
-```json
-{
-  "message":"401",
-  "reason":"Unauthorized bot"
-}
+```shell
+curl -X DELETE \
+     -H "Authorization: Bearer {token}" \
+     -H "Content-Type: application/json"  -d '
+      {
+          "numbers": [
+              "46732001122",
+              "46732002244"
+          ]
+      }' \
+  "https://us1.whatsapp.api.sinch.com/whatsapp/v1/{bot-id}/provision/optin"
 ```
