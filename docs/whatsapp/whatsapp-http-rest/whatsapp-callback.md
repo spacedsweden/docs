@@ -314,7 +314,7 @@ The format is as follows:
 |type       | Fixed value `error`                                                    | String    |
 |details    | Detailed string describing the error                                   | String    |
 
-##### Sample inbound Error message
+##### Sample inbound error message
 
 ```json
 {

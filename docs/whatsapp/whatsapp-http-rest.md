@@ -10,3 +10,4 @@ The WhatsApp REST API is designed to be a simple and powerful tool with features
    - Sending all WhatsApp message types
    - Receiving all WhatsApp inbound message types
    - WhatsApp group creation and management
+   - Checking the WhatsApp capability of numbers
