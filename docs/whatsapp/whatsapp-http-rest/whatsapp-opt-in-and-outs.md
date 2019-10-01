@@ -22,7 +22,17 @@ JSON object parameters:
 
 | Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
 | ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
-| numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
+| numbers | List of MSISDNs                  | String array | N/A        | 1 to 20 elements      | Yes      |
+
+sample
+```json
+{
+  "numbers": [
+    "46732001122",
+    "46732002244"
+  ]
+}
+```
 
 #### Responses
 
@@ -41,18 +51,7 @@ in a region where your bot does not reside. The body is a JSON object described 
 
 ### Opt in sample
 
-```shell
-curl -X POST \
-     -H "Authorization: Bearer {token}" \
-     -H "Content-Type: application/json"  -d '
-      {
-          "numbers": [
-              "46732001122",
-              "46732002244"
-          ]
-      }' \
-  "https://us1.whatsapp.api.sinch.com/whatsapp/v1/{bot-id}/provision/optin"
-```
+
 
 ## Opt-Out endpoint
 
@@ -67,7 +66,17 @@ JSON object parameters:
 
 | Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
 | ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
-| numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
+| numbers | List of MSISDNs                  | String array | N/A        | 1 to 20 elements      | Yes      |
+
+Sample
+```json
+{
+  "numbers": [
+    "46732001122",
+    "46732002244"
+  ]
+}
+```
 
 #### Responses
 
@@ -83,14 +92,3 @@ There was an error with your request. The body is a JSON object described [here]
 
 There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
 in a region where your bot does not reside. The body is a JSON object described [here](doc:whatsapp-introduction#section-http-errors)
-
-### Opt out sample
-
-```json
-{
-  "numbers": [
-    "46732001122",
-    "46732002244"
-  ]
-}
-```

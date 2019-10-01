@@ -16,7 +16,7 @@ JSON object parameters:
 
 | Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
 | ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
-| numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
+| numbers | List of MSISDNs                  | String array | N/A        | 1 to 20 elements      | Yes      |
 
 #### Responses
 
