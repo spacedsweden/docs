@@ -24,7 +24,7 @@ JSON object parameters:
 | ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | numbers | List of MSISDNs                  | String array | N/A        | 1 to 20 elements      | Yes      |
 
-sample
+**Sample**
 ```json
 {
   "numbers": [
@@ -42,12 +42,12 @@ Empty response body
 
 `400 Bad Request`
 
-There was an error with your request. The body is a JSON object described [here](doc:whatsapp-introduction#section-http-errors)
+There was an error with your request. The body is a JSON object described [here](doc:whatsapp-introduction#section-http-errors).
 
 `401 Unauthorized`
 
 There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
-in a region where your bot does not reside. The body is a JSON object described [here](doc:whatsapp-introduction#section-http-errors)
+in a region where your bot does not reside. The body is a JSON object described [here](doc:whatsapp-introduction#section-http-errors).
 
 ### Opt in sample
 
@@ -68,7 +68,7 @@ JSON object parameters:
 | ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | numbers | List of MSISDNs                  | String array | N/A        | 1 to 20 elements      | Yes      |
 
-Sample
+**Sample**
 ```json
 {
   "numbers": [
