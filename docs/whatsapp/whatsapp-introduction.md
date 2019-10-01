@@ -1,14 +1,12 @@
 ---
 title: "Introduction to WhatsApp"
-excerpt: "WhatsApp for Bussiness messaging"
+excerpt: "WhatsApp for Business messaging"
 ---
 The Sinch WhatsApp Business Messaging API provides a rich, enterprise grade messaging solution for clients who wish to communicate with their customers via WhatsApp.
 
 With over 1.5bn users globally using WhatsApp regularly to communicate with friends and family, it really does represent the digital extension of the users living room. It’s the inner circle of your customer’s communication so bringing your trusted brand communications to that inner circle has huge potential.
 
 Integrating the Sinch WhatsApp Business Messaging API with your own backend systems enables Rich, High fidelity, contextual conversations to be established via the WhatsApp channel.
-
-This API specification covers the range of features available.
 
 > **Note**
 >
@@ -30,7 +28,8 @@ If no authentication header is present or if the bearer token is invalid, the AP
 
 
 ## HTTP Errors
-Responses with status `400 Bad Request` and `401 Unauthorized` will present a JSON object in the body explaining the error. It has the following structure:
+Responses with status `400 Bad Request` and `401 Unauthorized` will present a JSON object in the body explaining the error.
+It has the following structure:
 
 | Name      | Description                                                          | JSON Type |
 | --------- | -------------------------------------------------------------------- | --------- |
@@ -49,5 +48,5 @@ The following WhatsApp URLs can be used by the WhatsApp API. We have servers in 
 
 | Server        |  URL                                   |
 |---------------|----------------------------------------|
-| US Production | https://us1\.whatsapp\.api\.sinch\.com |
-| EU Production | https://eu1\.whatsapp\.api\.sinch\.com |
+| US Production | https://us1.whatsapp.api.sinch.com     |
+| EU Production | https://eu1.whatsapp.api.sinch.com     |

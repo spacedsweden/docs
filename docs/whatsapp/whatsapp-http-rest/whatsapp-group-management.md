@@ -8,9 +8,6 @@ A collection of endpoints used to manage groups that are linked to a specific bo
 
 This endpoint allows for the creation of a group.
 
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
-
 *Request Body Schema*  
 -   application/json
 - Set the group subject for a group

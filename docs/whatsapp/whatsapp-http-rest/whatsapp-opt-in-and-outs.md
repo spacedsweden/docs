@@ -6,7 +6,7 @@ All Business initiated conversations via the Sinch WhatsApp Business API must st
 
 You can record a [opt-in](doc:whatsapp-opt-in-and-outs#section-opt-in) by the API call described below and once the “Opt-In” is recorded you’ll be able to message that customer via the Sinch WhatsApp Business API.
 
-Businesses must provide a method by which customers may opt-out of receiving future messages from your organisation. The [opt-out](doc:whatsapp-opt-in-and-outs#section-opt-out) should be handled using the API call below.
+Businesses must provide a method by which customers may opt-out of receiving future messages from your organization. The [opt-out](doc:whatsapp-opt-in-and-outs#section-opt-out) should be handled using the API call below.
 
 ## Opt-In
 
