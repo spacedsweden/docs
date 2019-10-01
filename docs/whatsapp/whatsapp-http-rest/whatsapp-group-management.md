@@ -1,121 +1,31 @@
 ---
 title: "Group Management"
-excerpt: "Manage your WhatsApp groups and their admins. Learn how to add or remove members of the different groups. Read more..."
+excerpt: "Manage your WhatsApp groups and their admins. Learn how to add or remove members of the different groups."
 ---
 A collection of endpoints used to manage groups that are linked to a specific bot.
+  - [Creating a new group](doc:whatsapp-group-management#create-group-endpoint)
+  - [Listing all groups associated with your bot](doc:whatsapp-group-management#list-groups-endpoint)
+  - [List all information for a specific group](doc:whatsapp-group-management#list-group-information-endpoint)
+  - [Updating a groups subject](doc:whatsapp-group-management#update-group-subject-endpoint)
+  - [Updating a groups icon](doc:whatsapp-group-management#update-group-icon-endpoint)
+  - [Leaving a group created by your bot](doc:whatsapp-group-management#leave-group-endpoint)
+  - [Remove group members from a specific group](doc:whatsapp-group-management#remove-members-endpoint)
+  - [Add admins to a specific group](doc:whatsapp-group-management#add-admins-endpoint)
+  - [Remove admins from a specific group](doc:whatsapp-group-management#remove-admins-endpoint)
+  - [Get an invite link to a specific group](doc:whatsapp-group-management#get-invite-link-endpoint)
+  - [Remove an active invite link from a specific group](doc:whatsapp-group-management#remove-invite-link-endpoint)
 
-## Create a new group
+## Create group endpoint
 
-This endpoint allows for the creation of a group.
+`POST whatsapp/v1/{bot-id}/groups`
 
-*Request Body Schema*  
--   application/json
-- Set the group subject for a group
+JSON object parameters:
 
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>subject
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            Group subject as a string.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+| Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
+| ------- | :------------------------------: | :----------: | :--------: | :-------------------: | :------: |
+| subject | Group subject                    | String       | N/A        | None                  | Yes      |
 
-
-### Responses
-
-**200 Expected result to a valid request**
-*Response schema: application/json*
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>group_id <br> <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span> <br> The identifier of the group</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-**400 Bad request**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**401 Unauthorized bot**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**503 Service unavailable**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**Path Parameters**
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="odd">
-          <td align="left">bot-id
-            <span class="req-red">required</span>
-          </td>
-          <td align="left"><span class="type-grey">string</span>
-            The identifier of the bot that wishes to send messages.
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Request samples
-
-**POST**
-
-```text
-/whatsapp/v1/{bot-id}/groups
-```
-
-**Payload**
+### Create group sample
 
 ```json
 {
@@ -123,9 +33,17 @@ This endpoint allows for the creation of a group.
 }
 ```
 
-### Response samples
+#### Responses
 
-#### 200
+`200 OK`
+
+The response body is a JSON object with the following parameters:
+
+|Name          | Description                    | JSON Type     |
+|--------------|--------------------------------|---------------|
+|group_id      | Group id of just created group | String        |
+
+Sample:
 
 ```json
 {
@@ -133,113 +51,30 @@ This endpoint allows for the creation of a group.
 }
 ```
 
-#### 400
+`400 Bad Request`
 
-```json
-{
-  "message": "Validation error",
-  "reason": "Field [to] can not be empty."
-}
-```
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-#### 401
+`401 Unauthorized`
 
-```json
-{
-  "message": "401",
-  "reason": "Unauthorized bot"
-}
-```
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-#### 503
+## List groups endpoint
 
-```json
-{
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
-}
-```
+`GET whatsapp/v1/{bot-id}/groups`
 
-## List all groups associated with your bot
+#### Responses
 
+`200 OK`
 
-With this endpoint you get a response with the groups that are associated with your bot.
+The response body is a JSON object with the following parameters:
 
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
+|Name          | Description                       | JSON Type     |
+|--------------|-----------------------------------|---------------|
+|groups        | Array of string group identifiers | String array  |
 
-## Responses
-
-**200 Expected result to a valid request**
-*Response schema: application/json*
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>groups <br> <span class="req-red">required</span></td>
-          <td><span class="type-grey">Array of strings</span> <br> Array of group ids that are associated to the given bot.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-**401 Unauthorized bot**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**503 Service unavailable**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-*Path Parameters*  
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="odd">
-          <td align="left">bot-id <br> <span class="req-red">required</span></td>
-          <td align="left">string <br> <span class="type-grey">The identifier of the bot that wishes to send messages.</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Request
-
-**GET**
-
-```text
-/whatsapp/v1/{bot-id}/groups
-```
-
-### Response samples
-
-#### 201
+Sample:
 
 ```json
 {
@@ -249,1011 +84,291 @@ With this endpoint you get a response with the groups that are associated with y
 }
 ```
 
-#### 401
+`400 Bad Request`
+
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
+
+`401 Unauthorized`
+
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
+
+## List group information endpoint
+
+`GET whatsapp/v1/{bot-id}/groups/{group-id}`
+
+#### Responses
+
+`200 OK`
+
+The response body is a JSON object with the following parameters:
+
+| Name          | Description                               | JSON Type    |
+| ------------- | ----------------------------------------- | ------------ |
+| admins        | Array of msisdns of all admins            | String array |
+| creation_time | ISO-8601 creation datetime of the group   | String       |
+| creator       | Msisdn of the creator of the group        | String       |
+| members       | Array of msisdns for members in the group | String array |
+| subject       | Subject of the group                      | String       |
+
+Sample:
 
 ```json
 {
-  "message": "401",
-  "reason": "Unauthorized bot"
+    "admins": [
+        "1805550000"
+    ],
+    "creator": "1805550000",
+    "members": [
+        "1805550000",
+        "46732001122"
+    ],
+    "subject": "Sinch Team WhatsApp Group",
+    "creation_time": "2019-09-23T07:56:22.000Z"
 }
 ```
 
-#### 503
+`400 Bad Request`
+
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
+
+`401 Unauthorized`
+
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
+
+## Update group subject endpoint
+
+`PATCH whatsapp/v1/{bot-id}/groups/{group-id}`
+
+JSON object parameters:
+
+| Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
+| ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
+| subject | Group subject                    | String       | N/A        | None                  | Yes      |
+
+### Update group subject sample
 
 ```json
 {
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
+  "subject": "Updated Sinch WhatsApp Team Group"
 }
 ```
 
-## List all information associated with the specified group id
+#### Responses
 
-When you need more information about a specified group id, this endpoint returns this information. See the **200** response below to read more about the response.
+`200 OK`
 
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
+Empty response body
 
-### Responses
+`400 Bad Request`
 
-**200 Expected result to a valid request**
-*Response schema: application/json*
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>admins <br> <span class="req-red">required</span></td>
-          <td><span class="type-grey">Array of string</span> <br> Array containing all admins of the group.</td>
-        </tr>
-        <tr class="row-even">
-          <td>creation_time <br> <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span> <br> Creation time of the group.</td>
-        </tr>
-        <tr class="row-odd">
-          <td>creator <br> <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span> <br> Number of the creator of the group</td>
-        </tr>
-        <tr class="row-even">
-          <td>members <br> <span class="req-red">required</span></td>
-          <td><span class="type-grey">Array of string</span> <br> Array containing all members of the group.</td>
-        </tr>
-        <tr class="row-odd">
-          <td>subject <br> <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span> <br> Subject of the group</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+`401 Unauthorized`
 
-**401 Unauthorized bot**
-*Response schema: application/json*
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
+## Update group icon endpoint
 
-**503 Service unavailable**
-*Response schema: application/json*
+`POST whatsapp/v1/{bot-id}/groups/{group-id}/icon`
 
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
+JSON object parameters:
 
-*Path Parameters*  
+| Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
+| ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
+| url     | Public url of group icon         | String       | N/A        | Valid URL, jpeg/png   | Yes      |
 
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>bot-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the bot that wishes to send messages.</td>
-        </tr>
-        <tr class="row-even">
-          <td>group-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the group.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
 
-### Request
-
-**GET**
-
-```text
-/whatsapp/v1/{bot-id}/groups/{group-id}
-```
-
-### Response samples
-
-#### 200
+### Update group icon sample
 
 ```json
 {
-  "admins": [
-    "0732000000",
-    "0732001122"
-  ],
-  "creator": "0732000000",
-  "members": [
-    "0732001122"
-  ],
-  "subject": "Sinch WhatsApp Group",
-  "creation_time": "2019-08-09T09:25:32.000Z"
+  "url": "https://www.example.com/new_icon.jpg"
 }
 ```
 
-#### 401
-
-```json
-{
-  "message": "401",
-  "reason": "Unauthorized bot"
-}
-```
-
-#### 503
-
-```json
-{
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
-}
-```
-
-## Update a groups subject
-
-By using this endpoint the group subject can be changed for a given bot id and group id.
-
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
-
-*Request Body Schema*  
--   application/json
-
-- Group subject
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>subject
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            Group subject as a string.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Responses
-
-**200 Expected result to a valid request**
-*Response schema: application/json*
-
-**400 Bad request**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**401 Unauthorized bot**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**503 Service unavailable**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-*Path Parameters*
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>bot-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the bot that wishes to send messages.</td>
-        </tr>
-        <tr class="row-even">
-          <td>group-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the group.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Request samples
-
-**PATCH**
-
-```text
-/whatsapp/v1/{bot-id}/groups/{group-id}
-```
-
-**Payload**
-
-```json
-{
-  "subject": "Sinch WhatsApp Team Group"
-}
-```
-
-### Response samples
-
-#### 200
-
-```json
-<empty>
-```
-
-#### 400
-
-```json
-{
-  "message": "Validation error",
-  "reason": "Field [subject] can not be empty"
-}
-```
-
-#### 401
-
-```json
-{
-  "message": "401",
-  "reason": "Unauthorized bot"
-}
-```
-
-#### 503
-
-```json
-{
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
-}
-```
-
-## Leave a specified group
-
-When you wish to leave a specified group this is the endpoint that should be used.
+#### Responses
 
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
-
-### Responses
-
-**200 Expected result to a valid request**
-*Response schema: application/json*
-
-**401 Unauthorized bot**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**503 Service unavailable**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-*Path Parameters*
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>bot-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the bot that wishes to send messages.</td>
-        </tr>
-        <tr class="row-even">
-          <td>group-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-          The identifier of the group.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Request
-
-**DELETE**
-
-```text
-/whatsapp/v1/{bot-id}/groups/{group-id}
-```
-
-### Response samples
-
-#### 200
-
-```json
-<empty>
-```
-
-#### 401
-
-```json
-{
-  "message": "401",
-  "reason": "Unauthorized bot"
-}
-```
-
-#### 503
-
-```json
-{
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
-}
-```
-
-## Remove group members
-
-With this endpoint, one ore more members of a specified group can be removed from that group.
-
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
-
-*Request Body Schema*  
--   application/json
-
-- List of group members to be removed.
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>numbers
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">Array of strings</span>
-            Array of phone numbers (msisdns).</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Responses
-
-**200 Expected result to a valid request**
-*Response schema: application/json*
-
-**400 Bad request**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**401 Unauthorized bot**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**503 Service unavailable**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-*Path Parameters*
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>bot-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the bot that wishes to send messages.</td>
-        </tr>
-        <tr class="row-even">
-          <td>group-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the group.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Request samples
-
-**DELETE**
-
-```text
-/whatsapp/v1/{bot-id}/groups/{group-id}/member
-```
-
-**Payload**
+`200 OK`
+
+Empty response body
+
+`400 Bad Request`
+
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
+
+`401 Unauthorized`
+
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
+
+## Leave group endpoint
+
+`DELETE whatsapp/v1/{bot-id}/groups/{group-id}`
+
+#### Responses
+
+`200 OK`
+
+Empty response body
+
+`400 Bad Request`
+
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
+
+`401 Unauthorized`
+
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
+
+## Remove members endpoint
+
+`POST whatsapp/v1/{bot-id}/groups/{group-id}/member`
+
+JSON object parameters:
+
+| Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
+| ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
+| numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
+
+### Remove members sample
 
 ```json
 {
   "numbers": [
-    "0732001122",
-    "0732002244",
-    "0732003366"
+    "46732001122",
+    "46732002244"
   ]
 }
 ```
 
-### Response samples
+#### Responses
 
-#### 200
+`200 OK`
 
-```text
-<empty>
-```
+Empty response body
 
-#### 400
+`400 Bad Request`
 
-```json
-{
-  "message": "Validation error",
-  "reason": "Field [subject] can not be empty"
-}
-```
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-#### 401
+`401 Unauthorized`
 
-```json
-{
-  "message": "401",
-  "reason": "Unauthorized bot"
-}
-```
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-#### 503
+## Add admins endpoint
 
-```json
-{
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
-}
-```
+`POST whatsapp/v1/{bot-id}/groups/{group-id}/admin`
 
-## Add admins to the specified group
+JSON object parameters:
 
-For a given group id you can add one or more admins.
+| Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
+| ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
+| numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
 
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
-
-*Request Body Schema*  
--   application/json
-
-- List of admins to be added to the group.
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>numbers
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">Array of strings</span>
-            Array of phone numbers (msisdns).</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Responses
-
-**200 Expected result to a valid request**
-*Response schema: application/json*
-
-**400 Bad request**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**401 Unauthorized bot**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**503 Service unavailable**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-*Path Parameters*
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>bot-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the bot that wishes to send messages.</td>
-        </tr>
-        <tr class="row-even">
-          <td>group-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the group.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Request samples
-
-**POST**
-
-```text
-/whatsapp/v1/{bot-id}/groups/{group-id}/admin
-```
-
-**Payload**
+### Add admins sample
 
 ```json
 {
   "numbers": [
-    "0732001122",
-    "0732002244",
-    "0732003366"
+    "46732001122",
+    "46732002244"
   ]
 }
 ```
 
-### Response samples
+#### Responses
 
-#### 200
+`200 OK`
 
-```text
-<empty>
-```
+Empty response body
 
-#### 400
+`400 Bad Request`
 
-```json
-{
-  "message": "Validation error",
-  "reason": "Field [subject] can not be empty"
-}
-```
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-#### 401
+`401 Unauthorized`
 
-```json
-{
-  "message": "401",
-  "reason": "Unauthorized bot"
-}
-```
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-#### 503
+## Remove admins endpoint
 
-```json
-{
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
-}
-```
+`DELETE whatsapp/v1/{bot-id}/groups/{group-id}/admin`
 
-## Remove admins from the specified group
+JSON object parameters:
 
-Use this endpoint to remove one or more admins of a specific group.
+| Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
+| ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
+| numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
 
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
-
-*Request Body Schema*  
--   application/json
-
-- List of admins to be removed from the group.
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>numbers
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">Array of strings</span>
-            Array of phone numbers (msisdns).</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Responses
-
-**200 Expected result to a valid request**
-*Response schema: application/json*
-
-**400 Bad request**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**401 Unauthorized bot**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**503 Service unavailable**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-*Path Parameters*
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>bot-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the bot that wishes to send messages.</td>
-        </tr>
-        <tr class="row-even">
-          <td>group-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the group.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Request samples
-
-**DELETE**
-
-```text
-/whatsapp/v1/{bot-id}/groups/{group-id}/admin
-```
-
-**Payload**
+### Remove admins sample
 
 ```json
 {
   "numbers": [
-    "0732001122",
-    "0732002244",
-    "0732003366"
+    "46732001122",
+    "46732002244"
   ]
 }
 ```
 
-### Response samples
+#### Responses
 
-#### 200
+`200 OK`
 
-```text
-<empty>
-```
+Empty response body
 
-#### 400
+`400 Bad Request`
 
-```json
-{
-  "message": "Validation error",
-  "reason": "Field [subject] can not be empty"
-}
-```
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-#### 401
+`401 Unauthorized`
 
-```json
-{
-  "message": "401",
-  "reason": "Unauthorized bot"
-}
-```
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-#### 503
+## Get invite link endpoint
 
-```json
-{
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
-}
-```
+`GET whatsapp/v1/{bot-id}/groups/{group-id}/invite`
 
-## Grab a valid group invite link to the specified group
+#### Responses
 
-Get a invitation link to the specific group. Use it to send invite members to the group.
+`200 OK`
 
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
+The response body is a JSON object with the following parameters:
 
-### Responses
+| Name          | Description                               | JSON Type    |
+| ------------- | ----------------------------------------- | ------------ |
+| invite_link   | Public url of link. Any WhatsApp user who clicks this link will join the group that this link relates to | String array |
 
-**200 Expected result to a valid request**
-*Response schema: application/json*
+`400 Bad Request`
 
-**401 Unauthorized bot**
-*Response schema: application/json*
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
+`401 Unauthorized`
 
-**503 Service unavailable**
-*Response schema: application/json*
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
+## Remove invite link endpoint
 
+`DELETE whatsapp/v1/{bot-id}/groups/{group-id}/invite`
 
-*Path Parameters*
+#### Responses
 
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>bot-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the bot that wishes to send messages.</td>
-        </tr>
-        <tr class="row-even">
-          <td>group-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the group.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+`200 OK`
 
-### Request
+Empty response body
 
-**GET**
+`400 Bad Request`
 
-```text
-/whatsapp/v1/{bot-id}/groups/{group-id}/invite
-```
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)
 
-### Response samples
+`401 Unauthorized`
 
-#### 200
-
-```text
-<empty>
-```
-
-#### 401
-
-```json
-{
-  "message": "401",
-  "reason": "Unauthorized bot"
-}
-```
-
-#### 503
-
-```json
-{
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
-}
-```
-
-## Delete the active group invite link
-
-If you have created a invitation link, it can be revoked with this endpoint.
-
-*Authorizations*  
--   [BearerAuth](doc:whatsapp-introduction#section-bearerauth)
-
-### Responses
-
-**200 Expected result to a valid request**
-*Response schema: application/json*
-
-**401 Unauthorized bot**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-**503 Service unavailable**
-*Response schema: application/json*
-
-| Name   | JSON type |
-| ------ | :-------: |
-| title  |   string  |
-| reason |   string  |
-
-*Path Parameters*
-
-<div class="magic-block-html">
-  <div class="marked-table">
-    <table>
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-odd">
-          <td>bot-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the bot that wishes to send messages.</td>
-        </tr>
-        <tr class="row-even">
-          <td>group-id
-            <span class="req-red">required</span></td>
-          <td><span class="type-grey">string</span>
-            The identifier of the group.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-### Request
-
-**DELETE**
-
-```text
-/whatsapp/v1/{bot-id}/groups/{group-id}/invite
-```
-
-### Response samples
-
-#### 200
-
-```text
-<empty>
-```
-
-#### 401
-
-```json
-{
-  "message": "401",
-  "reason": "Unauthorized bot"
-}
-```
-
-#### 503
-
-```json
-{
-  "message": "503",
-  "reason": "Internal service not available, request could not be handled"
-}
-```
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors)

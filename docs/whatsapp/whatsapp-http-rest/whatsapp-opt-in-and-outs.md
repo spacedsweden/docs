@@ -21,7 +21,7 @@ JSON object parameters:
 
 
 | Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
-| ------- | :------------------------------: | :----------: | :--------: | :-------------------: | :------: |
+| ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
 
 #### Responses
@@ -65,9 +65,8 @@ Opt-out numbers to prevent them from receiving messages from the business.
 
 JSON object parameters:
 
-
 | Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
-| ------- | :------------------------------: | :----------: | :--------: | :-------------------: | :------: |
+| ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | numbers | Array of phone numbers (msisdns) | String array | N/A        | Minimum 1, Maximum 20 | Yes      |
 
 #### Responses
