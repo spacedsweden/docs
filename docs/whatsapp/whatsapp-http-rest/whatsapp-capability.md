@@ -26,7 +26,7 @@ The response body is a JSON object with the following parameters:
 
 |Name        | Description                         | JSON Type    |
 |------------|------------------------------------ |--------------|
-|capabilities| List of capability statuses         | String array |
+|capabilities| List of capability statuses         | Object array |
 
 **Capability status**
 
