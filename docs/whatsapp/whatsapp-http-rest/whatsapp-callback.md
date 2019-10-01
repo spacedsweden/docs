@@ -300,3 +300,29 @@ The format is as follows:
   ]
 }
 ```
+
+**Error**
+
+|Name       | Description                                                            | JSON Type |
+|-----------|------------------------------------------------------------------------|-----------|
+|type       | Fixed value `error`                                                    | String    |
+|details    | Detailed string describing the error                                   | String    |
+
+##### Sample inbound Error message
+
+```json
+{
+  "type":"whatsapp",
+  "notifications":[
+    {
+      "from":"0732001122",
+      "to":"sinchbot",
+      "message_id":"a0189-7df8df4d129-7as8da9",
+      "message":{
+        "type":"error",
+        "details": "Inbound notification not supported"
+      }
+    }
+  ]
+}
+```
