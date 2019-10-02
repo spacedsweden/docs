@@ -149,6 +149,7 @@ The format is as follows:
 |addresses  | Array of contact address(e)                                        | Array[Object] |
 |birthday   | Contact's birthday, YYYY-MM-DD formatted string                    | String        |
 |emails     | Array of contact email address(es)                                 | Array[Object] |
+|ims        | Array of message contact information                               | Array[Object] |
 |name       | Contact full name information                                      | Object        |
 |org        | Contact organization information                                   | Object        |
 |phones     | Array of contact phone number(s)                                   | Array[Object] |
@@ -172,6 +173,13 @@ The format is as follows:
 |-------------|--------------------------------------------------------------------|---------------|
 |type         | Type of email address, `HOME`, `WORK`                              | String        |
 |email        | Email address                                                      | String        |
+
+**Contact IM**
+
+|Name         | Description                                                        | JSON Type     |
+|-------------|--------------------------------------------------------------------|---------------|
+|service      | Type of service                                                    | String        |
+|user_id      | User identifier on service                                         | String        |
 
 **Contact name**
 
