@@ -65,11 +65,11 @@ JSON object parameters:
 **Sample**
 ```json
 {
-  "start_time": "",
-  "end_time": "",
-  "from": "46732001122",
-  "page": 1,
-  "page_size": 20
+    "page": 1,
+    "page_size": 20,
+    "from": "46732001122",
+    "start_time": "2018-10-02T12:57:37.205Z",
+    "end_time": "2019-10-02T12:57:37.205Z"
 }
 ```
 
