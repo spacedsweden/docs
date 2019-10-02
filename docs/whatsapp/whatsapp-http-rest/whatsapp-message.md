@@ -1,5 +1,5 @@
 ---
-title: "Message"
+title: "Send WhatsApp Messages"
 excerpt: "Send messages via WhatsApp with Sinch WhatsApp API."
 ---
 The message endpoint is used as the primary endpoint of the API and this is where all the messages are sent through.
@@ -16,9 +16,6 @@ The message endpoint is used as the primary endpoint of the API and this is wher
 6.  Customers can start a rich content conversation with a business at any time  
     -   this opens up a new 24-hour session.
 
-## Supported Content-Types
-
-The Sinch WhatsApp API supports several media types. In the table below you can find what content-types are supported by the API.
 
 ## Send a WhatsApp message
 
@@ -33,6 +30,34 @@ JSON object parameters:
 | message | Message object                                                       | Object       | N/A        | Valid Message object  | Yes      |
 | callback| Callback URL to overwrite configured callback URL for status updates | String       | N/A        | Valid URL             | No       |
 
+#### Response
+
+`201 Created`
+
+The response body is a JSON object with the same format as a [delivery report callback](doc:whatsapp-callback#section-delivery-report-callback).
+
+```json
+{
+  "type": "whatsapp",
+  "statuses":[
+    {
+      "message_id":"f1690238-9c72-49c3-b1c6-b701f8765732",
+      "recipient":"+46732001122",
+      "status":"success",
+      "state":"queued"
+    },
+  ]
+}
+```
+
+`400 Bad Request`
+
+There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors).
+
+`401 Unauthorized`
+
+There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
+in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors).
 
 ### Message object types
 
@@ -48,10 +73,12 @@ JSON object parameters:
 | type          | Constant value `template`                                            | String       | N/A        | N/A                   | Yes      |
 | template_name | Name of the template                                                 | String       | N/A        | N/A                   | Yes      |
 | language      | Language to send the template in                                     | String       | `en`       | Language codes and locales (e.g `en`, `en_us`) | No       |
-| params        | Parameters to inject into the template.                              | String       | N/A        | N/A                   | Yes      |
-| ttl           | Time to live of the template message. If the receiver has not opened the template message before the time to live expires, the message will be deleted and a failed callback will be sent. The time to live can be specified in ISO-8601 Duration format or in seconds as a string. | String       | 30 Days    | Valid URL             | No      |
+| params        | Parameters to inject into the template.                              | String       | N/A        |                       | Yes      |
+| ttl           | Time to live of the template message. If the receiver has not opened the
+template message before the time to live expires, the message will be deleted
+and a failed callback will be sent. The time to live can be specified
+in ISO-8601 Duration format or in seconds as a string. | String       | 30 Days    | Valid URL             | No      |
 
-**Sample**
 ```json
 {
   "to": [
@@ -80,7 +107,6 @@ JSON object parameters:
 | preview_url | Message object                                                       | Boolean      | false      | `true` or `false`     | No       |
 | text        | The text message content                                             | String       | N/A        | Valid URL             | Yes      |
 
-**Sample**
 ```json
 {
   "to": [
@@ -102,10 +128,9 @@ JSON object parameters:
 | Name        | Description                                                          | JSON Type    | Default    | Constraints           | Required |
 | ----------- | -------------------------------------------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | type        | Constant value `image`                                               | String       | N/A        | N/A                   | Yes      |
-| url         | Public url of the image file                                         | String       | N/A        | `image/jpeg` or `image/png` | Yes      |
+| url         | Public url of the image file                                         | String       | N/A        | `jpg` or `png`        | Yes      |
 | caption     | Optional caption that will be displayed underneath the image.        | String       | None       | N/A                   | No       |
 
-**Sample**
 ```json
 {
   "to": [
@@ -127,10 +152,9 @@ JSON object parameters:
 | Name        | Description                                                          | JSON Type    | Default    | Constraints           | Required |
 | ----------- | -------------------------------------------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | type        | Constant value `video`                                               | String       | N/A        | N/A                   | Yes      |
-| url         | Public url of the video file (mp4)                                   | String       | N/A        | `mp4`, H.264 video codec and AAC audio codec | Yes      |
+| url         | Public url of the video file (mp4)                                   | String       | N/A        | `mp4`                 | Yes      |
 | caption     | Optional caption that will be displayed underneath the video.        | String       | None       | N/A                   | No       |
 
-**Sample**
 ```json
 {
   "to":[
@@ -152,10 +176,9 @@ JSON object parameters:
 | Name        | Description                                                          | JSON Type    | Default    | Constraints           | Required |
 | ----------- | -------------------------------------------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | type        | Constant value `video`                                               | String       | N/A        | N/A                   | Yes      |
-| url         | Public url of the document file                                      | String       | N/A        | `application/pdf`, `application/msword`, `application/vnd.ms-powerpoint`, `application/vnd.ms-excel`, `text/plain` | Yes      |
+| url         | Public url of the document file                                      | String       | N/A        | `pdf`, `doc` or `docx`| Yes      |
 | caption     | Optional caption that will be displayed as the document title.       | String       | None       | N/A                   | No       |
 
-**Sample**
 ```json
 {
   "to": [
@@ -178,9 +201,8 @@ JSON object parameters:
 | Name        | Description                                                          | JSON Type    | Default    | Constraints           | Required |
 | ----------- | -------------------------------------------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | type        | Constant value `video`                                               | String       | N/A        | N/A                   | Yes      |
-| url         | Public url of the document file                                      | String       | N/A        | `audio/acc`, `audio/mp4`, `audio/amr`, `audio/mpeg`, `audio/ogg`, codecs=opus | Yes      |
+| url         | Public url of the document file                                      | String       | N/A        | `mp3`                 | Yes      |
 
-**Sample**
 ```json
 {
   "to": [
@@ -207,7 +229,6 @@ JSON object parameters:
 | name        | The name for the location. Will be displayed in the message.         | String       | N/A        | N/A                   | No       |
 | address     | The address for the location. Will be displayed in the message.      | String       | N/A        | N/A                   | No       |
 
-**Sample**
 ```json
 {
   "to": [
@@ -232,72 +253,6 @@ JSON object parameters:
 | type        | Constant value `contacts`                                            | String       | N/A        | N/A                   | Yes      |
 | contacts    | List of contact cards                                                | Object array | N/A        | Valid contact cards   | Yes      |
 
-**Contact card**
-
-|Name       | Description                                                        | JSON Type     | Default    | Constraints           | Required |
-|-----------|------------------------------------------------------------------- |---------------| ---------- | --------------------- | :------: |
-|name       | List of contact full name information                              | Object array  | N/A        | Valid contact name    | Yes      |
-|addresses  | List of contact address(e)                                         | Object array  | N/A        | N/A                   | No       |
-|birthday   | Contact's birthday, YYYY-MM-DD formatted string                    | String        | N/A        | N/A                   | No       |
-|email      | List of of contact email address(es)                               | Object array  | N/A        | N/A                   | No       |
-|org        | List of contact organization information                           | Object array  | N/A        | N/A                   | No       |
-|phones     | List of contact phone number(s)                                    | Object array  | N/A        | N/A                   | No       |
-|urls       | List of contact URL(s)                                             | Object array  | N/A        | N/A                   | No       |
-
-**Contact address**
-
-|Name         | Description                                                        | JSON Type     | Default    | Constraints           | Required |
-|-------------|--------------------------------------------------------------------|---------------| ---------- | --------------------- | :------: |
-|city         | City name                                                          | String        | N/A        | N/A                   | Yes      |
-|type         | Type of address, `HOME`, `WORK`                                    | String        | N/A        | N/A                   | No       |
-|street       | Street number and address                                          | String        | N/A        | N/A                   | No       |
-|state        | State abbreviation                                                 | String        | N/A        | N/A                   | No       |
-|zip          | ZIP code                                                           | String        | N/A        | N/A                   | No       |
-|country      | Full country name                                                  | String        | N/A        | N/A                   | No       |
-|country_code | Two-letter country abbreviation                                    | String        | N/A        | N/A                   | No       |
-
-**Contact email**
-
-|Name         | Description                                                        | JSON Type     | Default    | Constraints           | Required |
-|-------------|--------------------------------------------------------------------|---------------| ---------- | --------------------- | :------: |
-|email        | Email address                                                      | String        | N/A        | N/A                   | Yes      |
-|type         | Type of email address, `HOME`, `WORK`                              | String        | N/A        | N/A                   | No       |
-
-**Contact name**
-
-|Name           | Description                                                        | JSON Type     | Default    | Constraints           | Required |
-|---------------|--------------------------------------------------------------------|---------------| ---------- | --------------------- | :------: |
-|formatted_name | Full name as it normally appears                                   | String        | N/A        | N/A                   | Yes      |
-|first_name     | First name                                                         | String        | N/A        | N/A                   | No       |
-|last_name      | Last name                                                          | String        | N/A        | N/A                   | No       |
-|middle_name    | Middle name                                                        | String        | N/A        | N/A                   | No       |
-|suffix         | Name suffix                                                        | String        | N/A        | N/A                   | No       |
-|prefix         | Name prefix                                                        | String        | N/A        | N/A                   | No       |
-
-**Contact organization**
-
-|Name           | Description                                                        | JSON Type     | Default    | Constraints           | Required |
-|---------------|--------------------------------------------------------------------|---------------| ---------- | --------------------- | :------: |
-|company        | Name of the contact's company                                      | String        | N/A        | N/A                   | Yes      |
-|department     | Name of the contact's department                                   | String        | N/A        | N/A                   | No       |
-|title          | Contact's business title                                           | String        | N/A        | N/A                   | No       |
-
-**Contact phone number**
-
-|Name         | Description                                                           | JSON Type     | Default    | Constraints           | Required |
-|-------------|-----------------------------------------------------------------------|---------------| ---------- | --------------------- | :------: |
-|phone        | Automatically populated with the WhatsApp phone number of the contact | String        | N/A        | N/A                   | Yes      |
-|type         | Type of phone number, `CELL`, `MAIN`, `HOME`, `WORK`, `IPHONE`        | String        | N/A        | N/A                   | No       |
-
-**Contact URL**
-
-|Name         | Description                                                           | JSON Type     | Default    | Constraints           | Required |
-|-------------|-----------------------------------------------------------------------|---------------| ---------- | --------------------- | :------: |
-|url          | URL                                                                   | String        | N/A        | N/A                   | Yes      |
-|type         | Type of URL `HOME`,  `WORK`                                           | String        | N/A        | N/A                   | No       |
-
-
-**Sample**
 ```json
 {
   "to": [
@@ -354,32 +309,3 @@ JSON object parameters:
   }
 }
 ```
-
-#### Response
-
-`201 Created`
-
-The response body is a JSON object with the same format as a [delivery report callback](doc:whatsapp-callback#section-delivery-report-callback).
-
-```json
-{
-  "type": "whatsapp",
-  "statuses":[
-    {
-      "message_id":"f1690238-9c72-49c3-b1c6-b701f8765732",
-      "recipient":"+46732001122",
-      "status":"success",
-      "state":"queued"
-    },
-  ]
-}
-```
-
-`400 Bad Request`
-
-There was an error with your request. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors).
-
-`401 Unauthorized`
-
-There was an authentication error with your request. Either you're using incorrect credentials or you're attempting to authenticate
-in a region where your bot does not reside. The body is a JSON object described in the [introduction](doc:whatsapp-introduction#section-http-errors).

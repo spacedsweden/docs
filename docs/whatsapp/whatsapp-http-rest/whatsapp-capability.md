@@ -1,5 +1,5 @@
 ---
-title: "WhatsApp Capability"
+title: "Capability"
 excerpt: "Read how to discover if your users are capable of receiving messages via WhatsApp."
 ---
 

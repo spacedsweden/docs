@@ -25,12 +25,11 @@ would be ignored but not rejected.
 
 JSON object parameters:
 
-
 | Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
 | ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | numbers | List of MSISDNs                  | String array | N/A        | 1 to 20 elements      | Yes      |
 
-sample
+**Sample**
 ```json
 {
   "numbers": [
@@ -74,7 +73,7 @@ JSON object parameters:
 | ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | numbers | List of MSISDNs                  | String array | N/A        | 1 to 20 elements      | Yes      |
 
-Sample
+**Sample**
 ```json
 {
   "numbers": [
