@@ -4,19 +4,13 @@ excerpt: "Get to know the callbacks that has been sent via WhatsApp."
 ---
 A callback is a HTTP POST request with a notification made by the Sinch WhatsApp API to a URI of your choosing. The Sinch WhatsApp API expects the receiving server to respond with a response code within the `2xx Success` range. If no successful response is received then the API will either schedule a retry if the error is expected to be temporary or discard the callback if the error seems permanent. The first initial retry will happen 5 seconds after the first try. The next attempt is after 10 seconds, then after 20 seconds, after 40 seconds, after 80 seconds and so on, doubling on every attempt. The last retry will be at 81920 seconds (or 22 hours 45 minutes) after the initial failed attempt.
 
-> **Note**
->
-> Sinch offers the possibility to store the callbacks for you, allowing you to poll the API at a later time for delivery reports and inbound message callbacks.
-> More information on how to poll this information from the API can be found [here](doc:whatsapp-callback-store).
-
-
 A callback from the Sinch WhatsApp API will always have the following structure:
 
 |Name          | Description                    | JSON Type     |
 |--------------|--------------------------------|---------------|
 |type          | Will always be `whatsapp`      | String        |
-|statuses      | List of delivery reports      | Object array  |
-|notifications | List of inbound messages      | Object array  |
+|statuses      | Array of delivery reports      | Array[Object] |
+|notifications | Array of inbound messages      | Array[Object] |
 
 ### Delivery report callback
 
@@ -146,19 +140,19 @@ The format is as follows:
 |Name       | Description                                                        | JSON Type     |
 |-----------|------------------------------------------------------------------- |---------------|
 |type       | Fixed value `contacts`                                             | String        |
-|contacts   | List of contact cards                                              | Object array  |
+|contacts   | Array of contact objects                                           | Array[Object] |
 
-**Contact card**
+**Contact object**
 
 |Name       | Description                                                        | JSON Type     |
 |-----------|------------------------------------------------------------------- |---------------|
-|addresses  | List of contact address(e)                                         | Object array  |
+|addresses  | Array of contact address(e)                                        | Array[Object] |
 |birthday   | Contact's birthday, YYYY-MM-DD formatted string                    | String        |
-|email      | List of of contact email address(es)                               | Object array  |
-|name       | List of contact full name information                              | Object array  |
-|org        | List of contact organization information                           | Object array  |
-|phones     | List of contact phone number(s)                                    | Object array  |
-|urls       | List of contact URL(s)                                             | Object array  |
+|emails     | Array of contact email address(es)                                 | Array[Object] |
+|name       | Contact full name information                                      | Object        |
+|org        | Contact organization information                                   | Object        |
+|phones     | Array of contact phone number(s)                                   | Array[Object] |
+|urls       | Array of contact URL(s)                                            | Array[Object] |
 
 **Contact address**
 
@@ -301,32 +295,6 @@ The format is as follows:
         "url":"http://www.example.com/img.jpg",
         "mime_type":"image/jpeg",
         "caption":"Fantastic headphones"
-      }
-    }
-  ]
-}
-```
-
-**Error**
-
-|Name       | Description                                                            | JSON Type |
-|-----------|------------------------------------------------------------------------|-----------|
-|type       | Fixed value `error`                                                    | String    |
-|details    | Detailed string describing the error                                   | String    |
-
-##### Sample inbound error message
-
-```json
-{
-  "type":"whatsapp",
-  "notifications":[
-    {
-      "from":"0732001122",
-      "to":"sinchbot",
-      "message_id":"a0189-7df8df4d129-7as8da9",
-      "message":{
-        "type":"error",
-        "details": "Inbound notification not supported"
       }
     }
   ]
