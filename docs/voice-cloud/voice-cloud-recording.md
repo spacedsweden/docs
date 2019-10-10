@@ -1,8 +1,8 @@
 ---
 title: "Recording calls"
 excerpt: ""
+hidden: "true"
 ---
-
 ## Overview
 
 With the Sinch platform, you’re able to control the recording of the calls using either the callbacks or the Manage Call API.

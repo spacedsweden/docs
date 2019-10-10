@@ -1,8 +1,8 @@
 ---
 title: "Callback API"
 excerpt: ""
+hidden: "true"
 ---
-
 ## Overview
 
 Controlling a call from your application backend is done by responding to callbacks from the Sinch platform and/or by calling REST APIs in the Sinch platform from your application’s backend. The figure that follows illustrates the lifecycle of a call and shows where both callbacks and REST API calls are located or can be made.

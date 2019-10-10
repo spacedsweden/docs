@@ -1,8 +1,8 @@
 ---
 title: "Sinch Classic SMS"
 excerpt: "This service documentation guide will assist you in setting up standard SMS service which is used for sending regular messages, notifications and marketing campaigns. Please refer to our [Verification documentation](doc:verification-introduction) if you are looking to verify users by SMS using OTP (One-time password) codes."
+hidden: "true"
 ---
-
 This document provides a detailed user guide and reference documentation on the Sinch SMS REST API. For general information on how to use the Sinch APIs including methods, types, errors and authorization, please check the [Using REST](doc:using-rest) page.
 
 ## Overview

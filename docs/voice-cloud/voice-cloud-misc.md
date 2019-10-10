@@ -1,8 +1,8 @@
 ---
 title: "Glossary"
 excerpt: ""
+hidden: "true"
 ---
-
 | Term       | Explanation                                             |
 | ---------- | ------------------------------------------------------- |
 | RTC        | Real Time Communication                                 |

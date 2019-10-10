@@ -1,8 +1,8 @@
 ---
 title: "Interactive Voice Response"
 excerpt: ""
+hidden: "true"
 ---
-
 The Sinch platform supports playing audio recordings during a call.
 
 ## External media support

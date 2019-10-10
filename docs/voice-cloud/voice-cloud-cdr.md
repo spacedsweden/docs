@@ -1,8 +1,8 @@
 ---
 title: "Call Detail Records"
 excerpt: ""
+hidden: "true"
 ---
-
 CDRs can be downloaded from the Sinch portal. CDRs are in a semicolon separated file that contains the following fields:
 
 ## Phone-terminated calls

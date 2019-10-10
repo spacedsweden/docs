@@ -1,6 +1,7 @@
 ---
 title: "HTTP SMS"
 excerpt: ""
+hidden: "true"
 ---
 ## Introduction
 

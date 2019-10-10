@@ -1,9 +1,9 @@
 ---
 title: "Call Report"
 excerpt: ""
+hidden: "true"
 ---
-
-    [URL]
+[URL]
         https://reportingapi.sinch.com/[version]
 
     Current version is "v1"
