@@ -8,7 +8,7 @@ next:
   description: Get started with the REST API
 ---
 
-## Quickstart Send your first SMS
+## Quickstart Send your first SMS!
 
 In a few lines of code you are able to send SMS messages with the Sinch API. 
 In this quick start we will learn how to 
