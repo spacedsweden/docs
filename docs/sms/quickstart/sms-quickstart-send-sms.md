@@ -1,12 +1,7 @@
 ---
 title: Quickstart - Send your first SMS
-excerpt: >-
-  This guide will teach how to send SMS with teh sinch API in minutes. 
-next:
-  pages:
-  description: Get started with the REST API
+excerpt: This guide will teach how to send SMS with teh sinch API in minutes.
 ---
-
 ## Quickstart - Send your first SMS
 
 In a few lines of code you are able to send SMS messages with the Sinch API. 
