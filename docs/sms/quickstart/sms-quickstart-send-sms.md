@@ -31,7 +31,8 @@ var request = require("request");
 var options = {
   method: 'POST',
   url: 'https://us.sms.api.sinch.com/xms/v1/{service_plan_id}/batches',
-  headers: {accept: 'application/json', 'content-type': 'application/json', "Authentication: Bearer {your token}"},
+  headers: {accept: 'application/json', 'content-type': 'application/json', 
+      "Authentication: Bearer {your token}"},
   body: '{"to":"{To Number}","from":"{your free test number}","body":"This is a test message"}'
 };
 
