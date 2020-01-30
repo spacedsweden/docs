@@ -1,11 +1,11 @@
 ---
 title: Callback
 excerpt: ''
+hidden: 'true'
 next:
   pages:
     - sms-rest-message-body
   description: 'Learn about supported characters, message length and parameterization'
-hidden: 'true'
 ---
 A callback is a HTTP POST request with a notification made by the Sinch SMS REST API to a URI of your choosing. The REST API expects the receiving server to respond with a response code within the `2xx` Success range. If no successful response is received then the REST API will either schedule a retry if the error is expected to be temporary or discard the callback if the error seems permanent. The first initial retry will happen 5 seconds after the first try. The next attempt is after 10 seconds, then after 20 seconds, after 40 seconds, after 80 seconds and so on, doubling on every attempt. The last retry will be at 81920 seconds (or 22 hours 45 minutes) after the initial failed attempt.
 

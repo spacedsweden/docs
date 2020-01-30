@@ -1,6 +1,8 @@
 ---
 title: Sinch Campaign Manager User Guide
-excerpt: 'The Sinch Manager User Guides can be found here. Get to know the Campaing Manager Portal. Read more.'
+excerpt: >-
+  The Sinch Manager User Guides can be found here. Get to know the Campaing
+  Manager Portal. Read more.
 ---
 The purpose of this Guide is to briefly describe usage of the Campaign Manager Portal.
 

@@ -1,8 +1,8 @@
 ---
 title: SMPP
 excerpt: >-
-  Low level control of SMS messaging and low latency can be achieved with the Sinch
-  Enhanced SMPP service. Read more.
+  Low level control of SMS messaging and low latency can be achieved with the
+  Sinch Enhanced SMPP service. Read more.
 next:
   pages:
     - sms-smpp-outbound

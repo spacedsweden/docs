@@ -1,6 +1,8 @@
 ---
 title: Other
-excerpt: 'In addition to the Sinch SMS REST API, we offer Cloud SMPP API and HTTP Basic API. Read more about them here.'
+excerpt: >-
+  In addition to the Sinch SMS REST API, we offer Cloud SMPP API and HTTP Basic
+  API. Read more about them here.
 next:
   pages:
     - sms-other-cloud-smpp
