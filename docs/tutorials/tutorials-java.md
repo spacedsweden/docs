@@ -6,8 +6,6 @@ next:
     - tutorial-java-send-sms
     - tutorial-java-send-sms-group
     - tutorial-java-spring-boot-delivery-reports
-    - sign-requests-in-java
-    - send-sms-in-java
     - maven-jenkins-artifactory-integration
   description: Check out our Java tutorials here
 ---

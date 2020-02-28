@@ -1,56 +1,136 @@
 ---
-title: Introduction
-excerpt: >-
-  Introduction to the SMS APIs that is offered by Sinch. The SMS REST API is the
-  easiest and most feature rich SMS API. Read more about our SMS APIs here.
+title: Send your first SMS
+excerpt: This guide will show you how to send and receive SMS with the sinch API in minutes.
 ---
-## Overview
 
-We offer a number of different APIs and libraries that make it easy for you to use our SMS services globally, to send and receive messages.
+## Quickstart - Send your first SMS
 
-## The different SMS APIs
+Learn how to send SMS messages with the Sinch API in a few minutes. In this guide, we  show you how to:
 
-### REST
-The easiest and most feature-rich API we offer. It allows for single messages, scheduled batch sending, message templates and more. You can also use our server-side libraries if you like to work natively in your programming language of choice.
+1. Create an account and get your free test number (US only)
+2. Send your first SMS
 
-### SMPP
-SMPP interfaces for full control and low latency.
+### Sign up for a Sinch account
 
-> **Note**
->
-> If you are a local customer of Sinch Germany GmbH, using our domestic German platform, please contact our [German support team](mailto:support-de@sinch.com) for further assistance.
+Before you can send your first SMS, you need a [Sinch
+account](https://dashboard.sinch.com/signup). (If you are in the United States,
+you also need a [free test phone
+number](https://dashboard.sinch.com/numbers/your-numbers/numbers).)
 
-## Getting started
-Getting started with the Sinch SMS API is simple.
-- Create an SMS account in the [Sinch Dashboard](https://dashboard.sinch.com/#/signup)
-- Get the REST API key available on your dashboard.
+**Atta, you have some good screen shots here?**
 
-Get started in minutes following one of the user guides below.
+### Send your first SMS
 
-<div class="magic-block-html"> <div class="ug-links"> <div class="row">
-       <a href="https://developers.sinch.com/docs/sms-rest" class="col-md-6 ug-link">
-         <div class="ug-title">
-           <span class="title">REST</span>
-         </div>
-       </a>
-       <a href="https://developers.sinch.com/docs/sms-smpp" class="col-md-6 ug-link">
-         <div class="ug-title">
-           <span class="title">SMPP</span>
-         </div>
-       </a>
-     </div>
-   </div>
-</div>
+Now that you have your account create a new node app and copy this into app.js
 
-## Need help?
-If you have any questions, feel free to check out our help section or contact us.
+```nodejs
+var request = require("request");
+var options = {
+  method: 'POST',
+  url: 'https://us.sms.api.sinch.com/xms/v1/{service_plan_id}/batches',
+  headers: {accept: 'application/json', 'content-type': 'application/json', 
+      "Authentication: Bearer {your token}"},
+  body: '{"to":"{To Number}","from":"{your free test number}","body":"This is a test message"}'
+};
 
-_I have an old integration, where do I find the documentation?_
-The guides above are our standard and recommended integration options. However, we do manage platforms where clients have integrated in the past, and we have collected those API guides here if you need them.
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+  console.log(body);
+});
+```
 
-##Other
+Before you can execute the code that and sends an SMS message, you need to
+modify it in a few places.
 
-You can find our other APIs below:
+#### Replace the token values
 
-- [HTTP Basic](doc:sms-other-http-basic)
-- [Cloud SMPP](doc:sms-other-cloud-smpp)
+Replace the values `{service_plan_id}`, `{your token}`, `{your free test
+number}` and `{To number}` with your values, you can find service plan and token
+in your dashboard. Go to https://dashboard.sinch.com/sms/api/rest and log in.
+Click on the show to reveal your token.
+
+![Screen shot of dashboard](images/sms-quickstart-dash.png)
+
+To find the From-number, click on the service plan id link and scroll to the
+bottom of the page.
+
+Change the `{To number}` to be your phone number.
+
+Thats all that is needed, run your app. When you are using a test-number the body
+of the message is replaced with sample text. If you want to send any message
+content [contact](https://dashboard.sinch.com/sms/overview) your account
+manager.
+
+Read more about the [batches
+endpoint](https://developers.sinch.com/reference/#sendsms)
+
+## Receive SMS via webhook
+
+The next step is to handle when you send an SMS to your Sinch number.
+
+### Configure Callback URL for your SMS service
+
+Before you implement the server to handle incoming SMS, you need to configure
+your SMS service to handle callbacks. Head over to
+https://dashboard.sinch.com/sms/api/rest and click on your service and you
+should see a section something like below
+
+![Screen shot of dashboard](images/sms-callback-url.png)
+
+If you just want to look at what we post you can use http://requestbin.net/
+Click create and you should see something like this:
+
+![Screen shot of request bin](images/requestbin.png)
+
+Copy bin URL to the callback URL info and click save.
+
+![Screen shot of callback configured](images/callbackurlconfigured.png)
+
+That's it, send an SMS to your sinch
+[number](https://dashboard.sinch.com/numbers/your-numbers/numbers)
+
+Refresh your request bin page to see the request data we send on incoming sms.
+
+![requestbin request](images/requestbin-request.png)
+
+### Handle incoming SMS with Node.js
+
+create a new node app and paste this into app.js
+
+```javascript
+const url = require('url');
+const http = require('http');
+const server = http.createServer((req, res) =>
+{
+    let data = []
+    req.on('data', chunk => {
+      data.push(chunk)
+    })
+    req.on('end', () => {
+        console.log(JSON.parse(data));
+    })
+    res.end();
+  })
+  server.listen(3000);
+```
+
+Before you can handle incoming traffic to your local server, you need open up a tunnel to your local server, for that you can use ngrok](https://ngrok.com/) tunnel. Open a terminal/command prompt and type:
+`ngrok http 3000`
+
+Copy of the https address in your window
+
+run app.js in the command prompt 'node app.js'
+
+![requestbin request](images/ngrok.png)
+
+Head over and change the callback URL in the dashboard for your SMS service.
+
+In the terminal windows start the app.js `node app.js`
+
+Send an SMS to your Sinch Number
+
+You should now see the request coming in
+
+![requestbin request](images/noderesponse.png)
+
+You can read more about all the different endpoints in th [API reference guid](https://developers.sinch.com/v1.0.1/reference)

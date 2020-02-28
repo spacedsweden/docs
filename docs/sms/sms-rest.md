@@ -18,15 +18,11 @@ The REST Messaging API is designed to be a simple and powerful tool for large sc
  - Automatic default originator selection support for messages without originator.
  - Receive inbound messages and delivery notifications via HTTP or AWS SNS.
 
-> **Note**
->
-> We have updated the endpoints used by the SMS REST API. [Read more](doc:sms-rest-getting-started#section-base-url)
 
-## Service plan
+To get started in minutes you can head over to [Quickstarts](doc:sms/quickstart)
+## Using the Rest api
 
-To use the REST API you first need to create an HTTP REST Service using the [web dashboard](https://dashboard.sinch.com/#/signup). You can have multiple service plans and each one will see their messages, groups or other resources isolated from each other.
-
-## Authentication
+#### Authentication
 
 You will be provided with an authentication token for each service plan.
 
@@ -39,7 +35,7 @@ curl -X POST \
      -H "Authorization: Bearer {token}" \
      -H "Content-Type: application/json"  -d '
       {
-          "from": "12345",
+          "from": "{Number you have on your account}",
           "to": [
               "123456789"
           ],
@@ -48,7 +44,7 @@ curl -X POST \
   "https://eu.sms.api.sinch.com/xms/v1/{service_plan_id}/batches"
 ```
 
-## Base URL
+#### Base URL
 
 The following URLs can be used by the REST API. We have servers in the US and EU. By default your account will be created in the US environment. If you'd like access to the European environment, please contact our support team.  
 
@@ -60,32 +56,28 @@ The following URLs can be used by the REST API. We have servers in the US and EU
 | US Production | https://us.sms.api.sinch.com     |
 | EU Production | https://eu.sms.api.sinch.com     |
 
-## Rate Limits
+#### Rate Limits
 
 Each service plan comes with a rate limit which sets the maximum number of messages that can be sent per second. The rate limit is calculated from all messages sent via the API, so a batch with 10 recipients will count as 10 messages for rate limiting purposes.
 
 Each service plan gets it's own message queue served in First-In-First-Out order. This means that new batches will be accepted immediately but might be delayed if earlier batches are still on queue.
 
-## SMS REST formats
+### SMS REST formats and conventions
 
 This section will take a brief look at some of the formats used in the REST API.
 
-### JSON
+#### JSON
 
 JSON (`application/json`) is the content type of both requests and responses if not otherwise specified.
 
 Requests with invalid JSON will be rejected.
 
-Null values can be omitted in requests and will be omitted in responses. In some cases explicitly setting `null` will overwrite a previously set value with `null`. See [Update a group](doc:sms-rest-groups-endpoint#section-update-a-group) for an example.
+Null values can be omitted in requests and will be omitted in responses. In some cases explicitly setting `null` will overwrite a previously set value with `null`. See [Update a group](#section-update-a-group) for an example.
+New features might result in additional request and response
+parameters. New request parameters will either have a default value or
+considered optional to retain backwards compatibility. It is highly recommended to ignore any unexpected parameters when reading JSON in API responses and in callback handlers.
 
-> **Note**    
->
-> New features might result in additional request and response
-> parameters. New request parameters will either have a default value or
-> considered optional to retain backwards compatibility. It is highly
-> recommended to ignore any unexpected parameters when reading JSON in API responses and in callback handlers.
-
-### MSISDN
+#### Phone numbers (MSISDN)
 
 Only MSISDNs in international format are accepted by the API.
 
@@ -93,7 +85,7 @@ MSISDNs can be sent in with or without a leading `+` (i.e. `+123456789` or `1234
 
 All MSISDNs returned by the REST API will be without a `+` or `00` prefix, even if they were sent in with one.
 
-### Timestamp
+#### Timestamps
 
 Timestamps are used for expressing a moment in time. They are represented using the [ISO-8601 standard](https://en.wikipedia.org/wiki/ISO_8601). Examples of those are the fields `send_at` and `expire_at` in the [Send a batch message](doc:sms-rest-batches-endpoint#section-send-a-batch-message) operation.
 
@@ -101,11 +93,11 @@ A time offset can be specified in accordance with [ISO-8601 time offsets from UT
 
 All timestamps returned by the API will be represented in UTC time, with millisecond precision.
 
-## HTTP Status Codes
+### HTTP Status Codes
 
 The REST API returns an HTTP status and code each time a request is made.
 
-### HTTP Statuses
+##### HTTP Statuses
 
 The following HTTP status codes are used by the API. Additional codes might be added in the future and if you encounter a code not in this list please consult the [HTTP specification](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10/) for a definition.
 
@@ -124,7 +116,7 @@ The following HTTP status codes are used by the API. Additional codes might be a
 | 503&nbsp;Service&nbsp;Unavailable         | The service is unable to perform the request at this point. Most likely due to a required subsystem being unavailable.      |
 
 
-### HTTP Errors
+##### HTTP Errors
 
 Responses with status `400 Bad Request` and `403 Forbidden` will present a JSON object in the body explaining the error. It has the following structure:
 
@@ -133,7 +125,7 @@ Responses with status `400 Bad Request` and `403 Forbidden` will present a JSON 
 | `code` | A code that can be used to programmatically recognize the error. See [below](#section-error-codes) for possible values. | `String`  |
 | `text` | Human readable description of the error. Can be used for debugging.                                                     | `String`  |
 
-### Error codes
+##### Error codes
 
 The following error codes can be returned as values for the `code` field:
 
@@ -146,191 +138,7 @@ The following error codes can be returned as values for the `code` field:
 | 403         | `unknown_campaign`                | The campaign ID does not match the specified originator.                                                            |
 | 403         | `missing_callback_url`            | Callback has been requested but no URL is provided.                                                                 |
 
-## Callback
-
-A callback is a HTTP POST request with a notification made by the Sinch SMS REST API to a URI of your choosing. The REST API expects the receiving server to respond with a response code within the `2xx` Success range. If no successful response is received then the REST API will either schedule a retry if the error is expected to be temporary or discard the callback if the error seems permanent. The first initial retry will happen 5 seconds after the first try. The next attempt is after 10 seconds, then after 20 seconds, after 40 seconds, after 80 seconds and so on, doubling on every attempt. The last retry will be at 81920 seconds (or 22 hours 45 minutes) after the initial failed attempt.
-
-The REST API offers the following callback options which can be configured for your account upon request to your account manager.
-
- * Callback with mutual authentication over TLS (HTTPS) connection by provisioning the callback URL with client keystore and password.
- * Callback with basic authentication by provisioning the callback URL with username and password.
- * Callback with OAuth 2.0 by provisioning the callback URL with username, password and the URL to fetch OAuth access token.
- * Callback using AWS SNS by provisioning the callback URL with an Access Key ID, Secret Key and Region.
-
-### Delivery report callback
-
-A delivery report contains the status and status code for each recipient of a batch. To get a delivery report callback for a message or batch of messages you need to set the `delivery_report` field accordingly when [creating a batch](doc:sms-rest-batches-endpoint#section-send-a-batch-message). The formats of the different types of delivery reports are described in [Retrieve a delivery report](doc:sms-rest-batches-endpoint#section-retrieve-a-delivery-report) and in [Retrieve a recipient delivery report](doc:sms-rest-batches-endpoint#section-retrieve-a-recipient-delivery-report).
-
-The callback URL can either be provided for each batch in the [Send a batch message](doc:sms-rest-batches-endpoint#section-send-a-batch-message) operation or provisioned globally for your account.
-
-### Inbound message callback
-
-An inbound message or MO (*Mobile Originated*) is a message sent to one of your shortcodes or long numbers from a mobile phone. The format of an inbound callback is described in [Inbounds Endpoint](doc:sms-rest-inbounds-endpoint).
-
-To receive inbound message callbacks, a URL needs to be provisioned for your account. This URL can be specified in the Sinch Dashboard.
-
-## Message Body
-
-When specifying the message body in the request, the characters used as well as the length of the message affect how many actual SMS messages are sent out. When using [parameterization](doc:sms-rest-parameterization), the length of each message may also vary depending on the recipient-specific data.
-
-### Supported Characters
-
-Individual characters used in the message determine the type of encoding that will ultimately be used to send the SMS message. The API automatically detects the encoding required from the characters used, which allows us to support the delivery of SMS in any language.
-
-#### Basic Character Set
-
-You can send up to 160 characters in a single SMS message if all characters in your message are part of the GSM 7-bit character set:
-
-|      |       |      |     |     |     |     |       |
-|-- -  | ---   | ---  | --- | --- | --- | --- | --- --|
-| @    | Δ     | `SP` | 0   | ¡   | P   | ¿   | p     |
-| £    | _     | !    | 1   | A   | Q   | a   | q     |
-| $    | Φ     | "    | 2   | B   | R   | b   | r     |
-| ¥    | Γ     | #    | 3   | C   | S   | c   | s     |
-| è    | Λ     | ¤    | 4   | D   | T   | d   | t     |
-| é    | Ω     | %    | 5   | E   | U   | e   | u     |
-| ù    | Π     | &    | 6   | F   | V   | f   | v     |
-| ì    | Ψ     | '    | 7   | G   | W   | g   | w     |
-| ò    | Σ     | (    | 8   | H   | X   | h   | x     |
-| Ç    | Θ     | )    | 9   | I   | Y   | i   | y     |
-| `LF` | Ξ     | *    | :   | J   | Z   | j   | z     |
-| Ø    | `ESC` | +    | ;   | K   | Ä   | k   | ä     |
-| ø    | Æ     | ,    | <   | L   | Ö   | l   | ö     |
-| `CR` | æ     | -    | =   | M   | Ñ   | m   | ñ     |
-| Å    | ß     | .    | >   | N   | Ü   | n   | ü     |
-| å    | É     | /    | ?   | O   | §   | o   | à     |
-
-`LF` is the Line Feed character - for JSON format, provide it as `\n`
-`SP` is the Space character
-
-#### Extended Character Set
-
-The following characters are also available, but they are counted as two characters in the SMS message rather than one:
-
-`|` , `^` , `€` , `{` , `}` , `[` , `]` , `~` , `\`
-
-#### Other Characters
-
-If other characters are required for different languages, 16-bit Unicode (UCS-2) encoding will be used. When using UCS-2 encoding, each character will take 2 bytes, which means up to 70 characters can be sent per UCS-2 encoded SMS message.
-
-### Long Messages
-
-The message body in a request can contain up to 1600 characters. Longer messages will be split and sent as multiple distinct SMS messages. In most cases, those messages will be re-assembled on the handset and displayed to the end-user as a single long message. You can use the tables below to determine the actual number of SMS messages your message will use depending on its length and encoding.
-
-#### Using only 7-bit Characters
-
-| Message Length | Number of SMS Parts |
-|-- -            | ---               --|
-| 1 - 160        | 1                   |
-| 161 - 306      | 2                   |
-| 307 - 459      | 3                   |
-| 460 - 612      | 4                   |
-| 613 - 765      | 5                   |
-| 766 - 918      | 6                   |
-| 919 - 1061     | 7                   |
-| 1062 - 1214    | 8                   |
-| 1215 - 1367    | 9                   |
-| 1368 - 1520    | 10                  |
-| 1521 - 1600    | 11                  |
-
-Each SMS in a multi-part 7-bit encoded message, has a maximum length of 153 characters.
-
-#### Using Unicode Characters
-
-| Message Length | Number of SMS Parts |
-|-- -            | ---               --|
-| 1 - 70         | 1                   |
-| 71 - 134       | 2                   |
-| 134 - 201      | 3                   |
-| 202 - 268      | 4                   |
-| 269 - 335      | 5                   |
-| 336 - 402      | 6                   |
-| 403 - 469      | 7                   |
-| 470 - 538      | 8                   |
-| 539 - 605      | 9                   |
-| 606 - 672      | 10                  |
-| 673 - 739      | 11                  |
-| 740 - 796      | 12                  |
-| 797 - 853      | 13                  |
-| 854 - 924      | 14                  |
-| 925 - 991      | 15                  |
-| 992 - 1058     | 16                  |
-| 1059 - 1115    | 17                  |
-| 1116 - 1182    | 18                  |
-| 1183 - 1249    | 19                  |
-| 1250 - 1316    | 20                  |
-| 1317 - 1383    | 21                  |
-| 1384 - 1450    | 22                  |
-| 1451 - 1517    | 23                  |
-| 1518 - 1584    | 24                  |
-| 1585 - 1600    | 25                  |
-
-Each SMS in a multi-part Unicode encoded message, has a maximum length of 67
-characters.
-
-## Parameterization
-
-Parameterization enables you to customize parts of a message for each recipient.
-
-This is done by defining a *parameter key* and placing it in the message body. For each *parameter key*, a recipient and parameter value must be provided. The position of a parameter in a message is defined by specifying placeholders in the format `${parameter_key}` in the message body, where `parameter_key` is the name of the parameter to replace with its corresponding value.
-
-For example the message body `Hi ${name}! How are you?` contains the parameter `name` and will be replaced according to the rules specified in the `parameters` field in the [Send a batch message](doc:sms-rest-batches-endpoint#section-send-a-batch-message) operation.
-
-A default parameter value can be specified that will be used when an MSISDN is not listed for a particular parameter. To set this, identify a recipient as default for each *parameter key*.
-
-If a target MSISDN is missing in the parameters object and no default value has been defined for that parameter the message will fail for that MSISDN but not for other recipients.
-
-Parameter keys are case sensitive.
-
-## Delivery Reports
-
-The REST API uses message statuses and error codes in delivery reports, which refer to the state of the SMS batch and can be present in either [Retrieve a delivery report](doc:sms-rest-batches-endpoint#section-retrieve-a-delivery-report) or sent to a [callback](doc:sms-rest-callback).
-
-This section describes the statuses and codes returned in those delivery reports.
-
-### Delivery Report Statuses
-
-The status field describes which state a particular message is in. Please note that statuses of type Intermediate will only be reported if you request a status per recipient ([Retrieve a recipient delivery report](doc:sms-rest-batches-endpoint#section-retrieve-a-recipient-delivery-report)), no callback will be made to report them. The following statuses are available when using the REST API:
-
-| Status     | Type         | Description                                                                                                                                   |
-|-- -        | ---          | ---                                                                                                                                         --|
-| Queued     | Intermediate | Message is queued within REST API system and will be dispatched according to the rate of the account.                                         |
-| Dispatched | Intermediate | Message has been dispatched and accepted for delivery by the SMSC.                                                                            |
-| Aborted    | Final        | Message was aborted before reaching the SMSC.                                                                                                 |
-| Rejected   | Final        | Message was rejected by the SMSC.                                                                                                             |
-| Delivered  | Final        | Message has been delivered.                                                                                                                   |
-| Failed     | Final        | Message failed to be delivered.                                                                                                               |
-| Expired    | Final        | Message expired before delivery to the SMSC. This may happen if the expiry time for the message was very short.                               |
-| Unknown    | Final        | Message was delivered to the SMSC but no Delivery Receipt has been received or a Delivery Receipt that could not be interpreted was received. |
-
-### Delivery Report Error Codes
-
-The delivery report status code provides a more detailed view of what happened with a message. The REST API shares most of its error codes with other SMS services.
-
-These are defined [here](doc:sms-other-cloud-smpp#section-error-codes).
-
-In addition to these standard error codes, the REST API provides an additional set of error codes, all within the 4xx range (vendor specific errors in the range of 0x400 to 0x4FF as referenced in the SMPP specification). These are listed below:
-
-| Status Code (Hex) | Name                         | Status     | Description                                                                                                                         |
-| ----------------- | ---------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| 400               | Queued                       | Queued     | Message is queued within REST API system and will be dispatched according to the rate of the account.                               |
-| 401               | Dispatched                   | Dispatched | Message has been dispatched to SMSC.                                                                                                |
-| 402               | Message unroutable           | Aborted    | SMSC rejected message. Retrying is likely to cause the same error.                                                                  |
-| 403               | Internal error               | Aborted    | An unexpected error caused the message to fail.                                                                                     |
-| 404               | Temporary delivery failure   | Aborted    | Message failed because of temporary delivery failure. Message can be retried.                                                       |
-| 405               | Unmatched Parameter          | Aborted    | One or more parameters in the message body has no mapping for this recipient. See [Parameterization](doc:sms-rest-parameterization) |
-| 406               | Internal Expiry              | Aborted    | Message was expired before reaching SMSC. This may happen if the expiry time for the message was very short.                        |
-| 407               | Canceled                     | Aborted    | Message was canceled by user before reaching SMSC.                                                                                  |
-| 408               | Internal Reject              | Aborted    | SMSC rejected the message. Retrying is likely to cause the same error.                                                              |
-| 410               | Unmatched default originator | Aborted    | No default originator exists/configured for this recipient when sending message without originator.                                 |
-| 411               | Exceeded parts limit         | Aborted    | Message failed as the number of message parts exceeds the defined max number of message parts.                                      |
-| 412               | Unprovisioned region         | Aborted    | SMSC rejected the message. The account has not been provisioned for this region.                                                    |
-
-> **Note**    
->
-> New error codes may be added over time.
-
-## Batches Endpoint
+## Send SMS Messages
 
 ### Send a batch message
 
@@ -943,6 +751,191 @@ The format for summary and full reports is the same as the retrieve\_delivery\_r
 #### Per recipient
 
 If a batch was created with a request for *per\_recipient* *delivery\_report* then a callback will be made for each status change of a message. This could result in a lot of callbacks and should be **used with caution for larger batches**. These delivery reports also include a timestamp of when the Delivery Report originated from the SMSC.
+
+### Callbacks
+
+A callback is a HTTP POST request with a notification made by the Sinch SMS REST API to a URI of your choosing. The REST API expects the receiving server to respond with a response code within the `2xx` Success range. If no successful response is received then the REST API will either schedule a retry if the error is expected to be temporary or discard the callback if the error seems permanent. The first initial retry will happen 5 seconds after the first try. The next attempt is after 10 seconds, then after 20 seconds, after 40 seconds, after 80 seconds and so on, doubling on every attempt. The last retry will be at 81920 seconds (or 22 hours 45 minutes) after the initial failed attempt.
+
+The REST API offers the following callback options which can be configured for your account upon request to your account manager.
+
+ * Callback with mutual authentication over TLS (HTTPS) connection by provisioning the callback URL with client keystore and password.
+ * Callback with basic authentication by provisioning the callback URL with username and password.
+ * Callback with OAuth 2.0 by provisioning the callback URL with username, password and the URL to fetch OAuth access token.
+ * Callback using AWS SNS by provisioning the callback URL with an Access Key ID, Secret Key and Region.
+
+#### Delivery report callback
+
+A delivery report contains the status and status code for each recipient of a batch. To get a delivery report callback for a message or batch of messages you need to set the `delivery_report` field accordingly when [creating a batch](doc:sms-rest-batches-endpoint#section-send-a-batch-message). The formats of the different types of delivery reports are described in [Retrieve a delivery report](doc:sms-rest-batches-endpoint#section-retrieve-a-delivery-report) and in [Retrieve a recipient delivery report](doc:sms-rest-batches-endpoint#section-retrieve-a-recipient-delivery-report).
+
+The callback URL can either be provided for each batch in the [Send a batch message](doc:sms-rest-batches-endpoint#section-send-a-batch-message) operation or provisioned globally for your account.
+
+#### Inbound message callback
+
+An inbound message or MO (*Mobile Originated*) is a message sent to one of your shortcodes or long numbers from a mobile phone. The format of an inbound callback is described in [Inbounds Endpoint](doc:sms-rest-inbounds-endpoint).
+
+To receive inbound message callbacks, a URL needs to be provisioned for your account. This URL can be specified in the Sinch Dashboard.
+
+### Message Body
+
+When specifying the message body in the request, the characters used as well as the length of the message affect how many actual SMS messages are sent out. When using [parameterization](doc:sms-rest-parameterization), the length of each message may also vary depending on the recipient-specific data.
+
+#### Supported Characters
+
+Individual characters used in the message determine the type of encoding that will ultimately be used to send the SMS message. The API automatically detects the encoding required from the characters used, which allows us to support the delivery of SMS in any language.
+
+##### Basic Character Set
+
+You can send up to 160 characters in a single SMS message if all characters in your message are part of the GSM 7-bit character set:
+
+|      |       |      |     |     |     |     |       |
+|-- -  | ---   | ---  | --- | --- | --- | --- | --- --|
+| @    | Δ     | `SP` | 0   | ¡   | P   | ¿   | p     |
+| £    | _     | !    | 1   | A   | Q   | a   | q     |
+| $    | Φ     | "    | 2   | B   | R   | b   | r     |
+| ¥    | Γ     | #    | 3   | C   | S   | c   | s     |
+| è    | Λ     | ¤    | 4   | D   | T   | d   | t     |
+| é    | Ω     | %    | 5   | E   | U   | e   | u     |
+| ù    | Π     | &    | 6   | F   | V   | f   | v     |
+| ì    | Ψ     | '    | 7   | G   | W   | g   | w     |
+| ò    | Σ     | (    | 8   | H   | X   | h   | x     |
+| Ç    | Θ     | )    | 9   | I   | Y   | i   | y     |
+| `LF` | Ξ     | *    | :   | J   | Z   | j   | z     |
+| Ø    | `ESC` | +    | ;   | K   | Ä   | k   | ä     |
+| ø    | Æ     | ,    | <   | L   | Ö   | l   | ö     |
+| `CR` | æ     | -    | =   | M   | Ñ   | m   | ñ     |
+| Å    | ß     | .    | >   | N   | Ü   | n   | ü     |
+| å    | É     | /    | ?   | O   | §   | o   | à     |
+
+`LF` is the Line Feed character - for JSON format, provide it as `\n`
+`SP` is the Space character
+
+##### Extended Character Set
+
+The following characters are also available, but they are counted as two characters in the SMS message rather than one:
+
+`|` , `^` , `€` , `{` , `}` , `[` , `]` , `~` , `\`
+
+##### Other Characters
+
+If other characters are required for different languages, 16-bit Unicode (UCS-2) encoding will be used. When using UCS-2 encoding, each character will take 2 bytes, which means up to 70 characters can be sent per UCS-2 encoded SMS message.
+
+### Long Messages
+
+The message body in a request can contain up to 1600 characters. Longer messages will be split and sent as multiple distinct SMS messages. In most cases, those messages will be re-assembled on the handset and displayed to the end-user as a single long message. You can use the tables below to determine the actual number of SMS messages your message will use depending on its length and encoding.
+
+#### Using only 7-bit Characters
+
+| Message Length | Number of SMS Parts |
+|-- -            | ---               --|
+| 1 - 160        | 1                   |
+| 161 - 306      | 2                   |
+| 307 - 459      | 3                   |
+| 460 - 612      | 4                   |
+| 613 - 765      | 5                   |
+| 766 - 918      | 6                   |
+| 919 - 1061     | 7                   |
+| 1062 - 1214    | 8                   |
+| 1215 - 1367    | 9                   |
+| 1368 - 1520    | 10                  |
+| 1521 - 1600    | 11                  |
+
+Each SMS in a multi-part 7-bit encoded message, has a maximum length of 153 characters.
+
+#### Using Unicode Characters
+
+| Message Length | Number of SMS Parts |
+|-- -            | ---               --|
+| 1 - 70         | 1                   |
+| 71 - 134       | 2                   |
+| 134 - 201      | 3                   |
+| 202 - 268      | 4                   |
+| 269 - 335      | 5                   |
+| 336 - 402      | 6                   |
+| 403 - 469      | 7                   |
+| 470 - 538      | 8                   |
+| 539 - 605      | 9                   |
+| 606 - 672      | 10                  |
+| 673 - 739      | 11                  |
+| 740 - 796      | 12                  |
+| 797 - 853      | 13                  |
+| 854 - 924      | 14                  |
+| 925 - 991      | 15                  |
+| 992 - 1058     | 16                  |
+| 1059 - 1115    | 17                  |
+| 1116 - 1182    | 18                  |
+| 1183 - 1249    | 19                  |
+| 1250 - 1316    | 20                  |
+| 1317 - 1383    | 21                  |
+| 1384 - 1450    | 22                  |
+| 1451 - 1517    | 23                  |
+| 1518 - 1584    | 24                  |
+| 1585 - 1600    | 25                  |
+
+Each SMS in a multi-part Unicode encoded message, has a maximum length of 67
+characters.
+
+## Parameterization
+
+Parameterization enables you to customize parts of a message for each recipient.
+
+This is done by defining a *parameter key* and placing it in the message body. For each *parameter key*, a recipient and parameter value must be provided. The position of a parameter in a message is defined by specifying placeholders in the format `${parameter_key}` in the message body, where `parameter_key` is the name of the parameter to replace with its corresponding value.
+
+For example the message body `Hi ${name}! How are you?` contains the parameter `name` and will be replaced according to the rules specified in the `parameters` field in the [Send a batch message](doc:sms-rest-batches-endpoint#section-send-a-batch-message) operation.
+
+A default parameter value can be specified that will be used when an MSISDN is not listed for a particular parameter. To set this, identify a recipient as default for each *parameter key*.
+
+If a target MSISDN is missing in the parameters object and no default value has been defined for that parameter the message will fail for that MSISDN but not for other recipients.
+
+Parameter keys are case sensitive.
+
+## Delivery Reports
+
+The REST API uses message statuses and error codes in delivery reports, which refer to the state of the SMS batch and can be present in either [Retrieve a delivery report](doc:sms-rest-batches-endpoint#section-retrieve-a-delivery-report) or sent to a [callback](doc:sms-rest-callback).
+
+This section describes the statuses and codes returned in those delivery reports.
+
+### Delivery Report Statuses
+
+The status field describes which state a particular message is in. Please note that statuses of type Intermediate will only be reported if you request a status per recipient ([Retrieve a recipient delivery report](doc:sms-rest-batches-endpoint#section-retrieve-a-recipient-delivery-report)), no callback will be made to report them. The following statuses are available when using the REST API:
+
+| Status     | Type         | Description                                                                                                                                   |
+|-- -        | ---          | ---                                                                                                                                         --|
+| Queued     | Intermediate | Message is queued within REST API system and will be dispatched according to the rate of the account.                                         |
+| Dispatched | Intermediate | Message has been dispatched and accepted for delivery by the SMSC.                                                                            |
+| Aborted    | Final        | Message was aborted before reaching the SMSC.                                                                                                 |
+| Rejected   | Final        | Message was rejected by the SMSC.                                                                                                             |
+| Delivered  | Final        | Message has been delivered.                                                                                                                   |
+| Failed     | Final        | Message failed to be delivered.                                                                                                               |
+| Expired    | Final        | Message expired before delivery to the SMSC. This may happen if the expiry time for the message was very short.                               |
+| Unknown    | Final        | Message was delivered to the SMSC but no Delivery Receipt has been received or a Delivery Receipt that could not be interpreted was received. |
+
+### Delivery Report Error Codes
+
+The delivery report status code provides a more detailed view of what happened with a message. The REST API shares most of its error codes with other SMS services.
+
+These are defined [here](doc:sms-other-cloud-smpp#section-error-codes).
+
+In addition to these standard error codes, the REST API provides an additional set of error codes, all within the 4xx range (vendor specific errors in the range of 0x400 to 0x4FF as referenced in the SMPP specification). These are listed below:
+
+| Status Code (Hex) | Name                         | Status     | Description                                                                                                                         |
+| ----------------- | ---------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 400               | Queued                       | Queued     | Message is queued within REST API system and will be dispatched according to the rate of the account.                               |
+| 401               | Dispatched                   | Dispatched | Message has been dispatched to SMSC.                                                                                                |
+| 402               | Message unroutable           | Aborted    | SMSC rejected message. Retrying is likely to cause the same error.                                                                  |
+| 403               | Internal error               | Aborted    | An unexpected error caused the message to fail.                                                                                     |
+| 404               | Temporary delivery failure   | Aborted    | Message failed because of temporary delivery failure. Message can be retried.                                                       |
+| 405               | Unmatched Parameter          | Aborted    | One or more parameters in the message body has no mapping for this recipient. See [Parameterization](doc:sms-rest-parameterization) |
+| 406               | Internal Expiry              | Aborted    | Message was expired before reaching SMSC. This may happen if the expiry time for the message was very short.                        |
+| 407               | Canceled                     | Aborted    | Message was canceled by user before reaching SMSC.                                                                                  |
+| 408               | Internal Reject              | Aborted    | SMSC rejected the message. Retrying is likely to cause the same error.                                                              |
+| 410               | Unmatched default originator | Aborted    | No default originator exists/configured for this recipient when sending message without originator.                                 |
+| 411               | Exceeded parts limit         | Aborted    | Message failed as the number of message parts exceeds the defined max number of message parts.                                      |
+| 412               | Unprovisioned region         | Aborted    | SMSC rejected the message. The account has not been provisioned for this region.                                                    |
+
+> **Note**    
+>
+> New error codes may be added over time.
+
 
 ## Inbounds Endpoint
 

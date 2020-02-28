@@ -6,11 +6,18 @@
   "directories": {
     "doc": "docs"
   },
-  "dependencies": {},
+  "watch": {
+    "test": "*.md"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0"
+  },
   "devDependencies": {
     "@sinch/readme-sync": "1.1.0"
   },
-  "scripts": {},
+  "scripts": {
+    "watch": "npm-watch"
+  },
   "author": "Sinch",
   "license": "MIT"
 }
