@@ -1,9 +1,9 @@
 ---
-title: Send your first SMS
+title: Getting started
 excerpt: This guide will show you how to send and receive SMS with the sinch API in minutes.
 ---
 
-## Quickstart - Send your first SMS
+## Send your first SMS
 
 Learn how to send SMS messages with the Sinch API in a few minutes. In this guide, we  show you how to:
 
