@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: About the SMS APIs
 excerpt: >-
   Introduction to the SMS APIs that is offered by Sinch. The SMS REST API is the
   easiest and most feature rich SMS API. Read more about our SMS APIs here.
