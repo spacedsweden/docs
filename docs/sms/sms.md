@@ -114,7 +114,7 @@ const server = http.createServer((req, res) =>
   server.listen(3000);
 ```
 
-Before you can handle incoming traffic to your local server, you need open up a tunnel to your local server, for that you can use ngrok](https://ngrok.com/) tunnel. Open a terminal/command prompt and type:
+Before you can handle incoming traffic to your local server, you need open up a tunnel to your local server, for that you can use [ngrok](https://ngrok.com/) tunnel. Open a terminal/command prompt and type:
 `ngrok http 3000`
 
 Copy of the https address in your window
