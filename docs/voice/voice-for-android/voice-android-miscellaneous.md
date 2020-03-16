@@ -5,7 +5,7 @@ excerpt: ''
 
 ## Minimum requirements
 
-You must have Android version 2.3 (Gingerbread) or later to use the Sinch SDK.
+We officially support the 3 latest major Android versions. You can try older versions but there are no guarantees it will work as expected.
 
 ## Production environments
 

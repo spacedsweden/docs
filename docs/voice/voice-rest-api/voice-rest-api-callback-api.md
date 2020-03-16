@@ -1,6 +1,6 @@
 ---
 title: Callback API
-excerpt: "Control calls from your application backend or by calling the REST API in the Sinch platform... Read more."
+excerpt: 'Control calls from your application backend or by calling the REST API in the Sinch platform... Read more.'
 next:
   pages:
     - voice-rest-api-reporting-api
@@ -57,18 +57,22 @@ SVAML is a call control markup language developed by Sinch. When your backend re
           <td align="left">Plays a text-to-speech message</td>
         </tr>
         <tr class="odd">
+          <td align="left">SendDtmf</td>
+          <td align="left">Send DTMF tones</td>
+        </tr>
+        <tr class="even">
           <td align="left">SetCookie</td>
           <td align="left">Sets a key/value pair session cookie that can be access in events throughout the call</td>
         </tr>
-        <tr class="even">
+        <tr class="odd">
           <td align="left">Answer</td>
           <td align="left">Explicitly answers an incoming call (not normally required)</td>
         </tr>
-        <tr class="odd">
+        <tr class="even">
           <td align="left">StartRecording</td>
           <td align="left">Starts call recording</td>
         </tr>
-        <tr class="even">
+        <tr class="odd">
           <td align="left">StopRecording</td>
           <td align="left">Stops call recording</td>
         </tr>
@@ -106,11 +110,16 @@ SVAML is a call control markup language developed by Sinch. When your backend re
           <td align="left">ICE response</td>
         </tr>
         <tr class="even">
+          <td align="left">ConnectMXP</td>
+          <td align="left">Instructs whether the app-app call will be connected</td>
+          <td align="left">ICE response</td>
+        </tr>
+        <tr class="odd">
           <td align="left">ConnectConf</td>
           <td align="left">Instructs to connect the call to a conference</td>
           <td align="left">ICE response</td>
         </tr>
-        <tr class="odd">
+        <tr class="even">
           <td align="left">ConnectSIP</td>
           <td align="left">Instructs to connect the call to a SIP server</td>
           <td align="left">ICE response</td>
@@ -155,6 +164,7 @@ Instructions allow your application to play a message to participants given a pa
         "text" : "Hello, this is a text to speech message",
         "locale" : "en-US"
     }
+
 **say** instruction is used to play a text-to-speech message to the end user. The message is provided in the text field.
 
 **text** is a string that contains the message to be played. The default maximum length is 600 characters. To change this limit, please contact support.
@@ -278,6 +288,15 @@ Supported languages / locales:
   </div>
 </div>
 
+### SendDtmf
+
+    {
+        "name" : "sendDtmf",
+        "value" : "1234#"
+    }
+
+**value** Specifies the DTMF to send to the caller. Valid characters in the string are "0"-"9", "#" and "w". A "w" will render a 500 ms pause. Example: "ww1234#w#" will render a 1s pause, the DTMF tones "1", "2", "3", "4" and "#" followed by a 0.5s pause and finally the DTMF tone for "#".
+
 ### SetCookie
 
     {
@@ -311,10 +330,10 @@ Starts recording the call.
     {
         "name": "StartRecording",
         "options": {
-            "destination": "s3://my-bucket/",
-            "credentials": "AKIAIOSFODNN7EXAMPLE:wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY:eu-central-1",
-            "notificationEvents": true
-        }
+        "destination": "s3://my-bucket/",
+        "credentials": "AKIAIOSFODNN7EXAMPLE:wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY:eu-central-1",
+        "notificationEvents": true
+      }
     }
 
 **options** is a RecordingOptions object that specifies details about the recording. See [RecordingOptions](doc:voice-rest-api-recording#section-recording-options) for more details.
@@ -342,16 +361,10 @@ Actions allow your Sinch application to control individual calls. The following 
 ### Continue
 
     {
-        "name" : "Continue",
-        "record": false,
-        "recordingOptions": [RecordingOptionsObject]
+        "name" : "Continue"
     }
 
 **continue** is the action of an answered call event callback to continue setting up the call.
-
-**record** is an optional parameter that instructs the system to record the call. Check the [recording](doc:voice-rest-api-recording) section for more information.
-
-**recordingOptions** is sent when record is set to true and specifies the details about the recording. See [RecordingOptions](doc:voice-rest-api-recording#section-recording-options) for more details.
 
 ### ConnectPstn
 
@@ -362,9 +375,8 @@ Actions allow your Sinch application to control individual calls. The following 
         "maxDuration" : 3000,
         "cli" : "private",
         "suppressCallbacks" : false,
-        "record": false,
         "indications": "se"
-   }
+    }
 
 **ConnectPstn** is the action of an incoming call event. It instructs how the PSTN call will be connected.
 
@@ -377,10 +389,6 @@ Actions allow your Sinch application to control individual calls. The following 
 **cli** is used to override the CLI of the client - if “private”, the CLI will be hidden. If not specified, the CLI that the client has set is used. In case of a PSTN-originated call, the phone number of the person that initiated the call will be shown as the CLI. To use CLI, your Sinch account must have CLI capabilities enabled.
 
 **suppressCallbacks** if set to true, you are opting out of the callbacks for ACE and DiCE for this call.
-
-**record** is an optional parameter that instructs the system to record the call. Check the [recording](doc:voice-rest-api-recording) section for more information.
-
-**recordingOptions** is sent when record is set to true and specifies the details about the recording. See [RecordingOptions](doc:voice-rest-api-recording#section-recording-options) for more details.
 
 **dtmf** when the destination picks up, this DTMF tones will be played to the callee. Valid characters in the string are "0"-"9", "#" and "w". A "w" will render a 500 ms pause. Example: "ww1234#w#" will render a 1s pause, the DTMF tones "1", "2", "3", "4" and "#" followed by a 500 pause and finally the DTMF tone for "#". This can be used if the callout destination for instance require a conference PIN code or an extension to be entered. If there is a calling party, it will hear progress while the DTMF is sent.
 
@@ -559,13 +567,30 @@ Actions allow your Sinch application to control individual calls. The following 
 
 **Notice**: You do not need to set _cli_ or _number_ if the values supplied by the client suffice.
 
+### ConnectMXP
+
+    {
+        "name": "connectMXP",
+        "destination": {
+        "type": "username",
+        "endpoint": "hello"
+        }
+    }
+
+**connectMXP** is the action of an incoming call event. It allows an app-to-app call to connect.
+
+**destination** is an optional parameter that allows you to specify or override the final call destination.
+
+> **Note**
+>
+> If you don’t dial the final destination, e.g. if you call another client and want a PSTN number to be called, then you need to specify the ‘destination’ parameter.
+
 ### ConnectConf
 
     {
         "name" : "ConnectConf",
         "conferenceId" : "myConference",
-        "moh" : "ring",
-        "record": false
+        "moh" : "ring"
     }
 
 **connectConf** is the action of an incoming call event. It allows the incoming call to be connected to a conference.
@@ -581,22 +606,16 @@ Actions allow your Sinch application to control individual calls. The following 
 
 If no “music-on-hold” is specified, the user will only hear silence.
 
-**record** is an optional parameter that instructs the system to record the conference. Check the [recording](doc:voice-rest-api-recording) section for more information.
-
-**recordingOptions** is sent when record is set to true and specifies the details about the recording. See [RecordingOptions](doc:voice-rest-api-recording#section-recording-options) for more details.
-
 #### ConnectSIP
 
-```json
-{
-  "name": "connectSIP",
-  "destination": { "endpoint": "46708000000@sip.foo.com" },
-  "maxDuration": 3000,
-  "cli": "private",
-  "record": false,
-  "suppressCallbacks": false
-}
-```
+    {
+        "name": "connectSIP",
+        "destination": { "endpoint": "46708000000@sip.foo.com" },
+        "maxDuration": 3000,
+        "cli": "private",
+        "transport": "tls",
+        "suppressCallbacks": false
+    }
 
 **connectSIP** is the action of an incoming call event. It instructs to route a call to your SIP server.
 
@@ -606,9 +625,7 @@ If no “music-on-hold” is specified, the user will only hear silence.
 
 **cli** is used to override the CLI of the client - if “private”, the CLI will be hidden. If not specified, the CLI that the client has set is used. In case of a PSTN-originated call, the phone number of the person that initiated the call will be shown as the CLI. To use CLI, your Sinch account must have CLI capabilities enabled.
 
-**record** is an optional parameter that instructs the system to record the conference. Check the [recording](doc:voice-rest-api-recording) section for more information.
-
-**recordingOptions** is sent when record is set to true and specifies the details about the recording. See [RecordingOptions](doc:voice-rest-api-recording#section-recording-options) for more details.
+**transport** is an optional paramter to provide SIP transport protocol. Valid options are UDP, TCP or TLS. If left out UDP will be used.
 
 **suppressCallbacks** if set to true, you are opting out of the callbacks for ACE and DiCE for this call
 
@@ -621,7 +638,8 @@ With the _runMenu_ action, the user will start listening to an IVR menu. This me
 _Example of runMenu action_
 
     {
-        "name"   :"RunMenu",
+        "name"   : "RunMenu",
+        "barge"  : true
         "menus"  :
         [
             {
@@ -668,6 +686,8 @@ _Example of runMenu action_
 **repeats** is the number of times that the repeatPrompt will be played.
 
 **maxDigits** is the maximum number of digits that is expected from a user to press. Once these digits are collected, a [PIE] Event will be triggered containing these digits. The digits are collected when either the maximum number of digits are entered, the user presses “\#” or the user waits 5 seconds after the last entered digit.
+
+**barge** "Barging" means that the user can press DTMF while hearing the prompt asking for DTMF input. The DTMF will stop the message playing and accept the input. With barging disabled, the user will have to listen to the full message before being able to reply with DTMF. This behaviour is controlled by setting "barge" parameter to true or false. By default, barging is enabled.
 
 ### Park
 
@@ -771,7 +791,7 @@ You can find more information on callback request signing [here].
 
 ### Response
 
-    [Svaml]
+[Svaml]
 
 _Example app-phone call response_
 
@@ -789,6 +809,19 @@ _Example app-phone call response_
             "number" : "+46555000111",
             "cli" : "+46555000222",
             "suppressCallbacks" : false
+        }
+    }
+
+_Example app-app call response_
+
+    {
+        "action":
+        {
+            "name" : "connectMXP",
+            "destination":{
+              "type":"username",
+              "endpoint":"hello"
+            }
         }
     }
 
@@ -978,7 +1011,7 @@ When the PIE event has been triggered from collecting DTMF digits, then the type
 
 ### Response
 
-    [Svaml]
+[Svaml]
 
 ## Notify Event Callback (Notify)
 

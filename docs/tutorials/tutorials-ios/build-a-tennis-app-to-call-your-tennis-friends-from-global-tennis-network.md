@@ -23,7 +23,7 @@ To get the most out of this tutorial, you will need to be familiar with the foll
 
 First, you will want to create an app on your [Sinch Dashboard](https://portal.sinch.com/#/login). Take note of the application key and secret, as we will need them later.
 
-Next, go to the [GTN Developer Site](https://www.globaltennisnetwork.com/developers) and opt to become a developer. You will be provided with a developer key. Save that for later.
+Next, go to the GTN Developer Site and opt to become a developer. You will be provided with a developer key. Save that for later.
 
 We will be working with a starter project that you can download from [GitHub](https://github.com/sinch/ios-call-your-tennis-friends). Once you have the starter project downloaded, use the included **Podfile** to install the necessary CocoaPods through Terminal with the command `pod install`. Am XCode workspace should now be available for us to use.
 

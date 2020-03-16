@@ -1,6 +1,9 @@
 ---
 title: Agent Event Endpoint
-excerpt: 'Send events from a RCS chatbot (A2P Agent) to a end user. Emulate real user behaviour by sending displayed notifications and composing events with the RCS chatbot. '
+excerpt: 'Send events from a RCS chatbot (A2P Agent) to a end user. Emulate real user behaviour by sending displayed notifications and composing events with the RCS chatbot.'
+next:
+  pages:
+    - rcs-rest-capability-endpoint
 ---
 The agent event endpoint provides operations for sending events from the agent to the user.
 

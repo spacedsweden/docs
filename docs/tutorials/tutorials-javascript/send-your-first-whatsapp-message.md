@@ -80,6 +80,25 @@ fetch(url, postReq)
   .catch(error => console.log(error));
 ```
 
+> **Warning**
+>
+> If you encounter an error:  **ReferenceError: fetch is not defined** then you probably don't have fetch API installed.
+
+Follow instructions below in order to fix this problem
+
+> 1. Install an external module that uses fetch API, like [node-fetch](https://github.com/node-fetch/node-fetch)
+
+```
+npm -i node-fetch --save
+```
+
+> 2. Add reference to fetch at the top of your js file
+
+```javascript
+const fetch = require("node-fetch");
+```
+
+
 ### 3. Receive a reply to your message
 
 In a real-world scenario, you’d have a web-hook setup connected to a bot framework or call center to react to any incoming messages, but for the sake of simplicity in this tutorial, reply to the message that just landed in your WhatsApp app.

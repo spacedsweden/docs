@@ -589,7 +589,6 @@ With conference callout, the server initiates call to a phone number and when th
     string - conferenceId
     string - greeting
     string - mohClass
-    string - dtmf
 ```
 
 **cli** is the number that will be displayed as caller
@@ -600,6 +599,8 @@ With conference callout, the server initiates call to a phone number and when th
     <tr><td><b>type</b></td><td>is a parameter inside the “destination” object. It can be “number” for PSTN endpoints, or “username” for data endpoints (app or web clients).<td></tr>
     <tr><td><b>endpoint</b></td><td>is a parameter inside the “destination” object. It is either the number of a PSTN endpoint, or the username for a data endpoint.</td></tr>
 </table>
+
+**dtmf** when the destination picks up, this DTMF tones will be played to the callee. Valid characters in the string are "0"-"9", "#" and "w". A "w" will render a 500 ms pause. Example: "ww1234#w#" will render a 1s pause, the DTMF tones "1", "2", "3", "4" and "#" followed by a 0.5s pause and finally the DTMF tone for "#". This can be used if the callout destination for instance require a conference PIN code or an extension to be entered.
 
 **endpoint** is either the number of a PSTN endpoint, or the username for a data endpoint.
 
@@ -684,7 +685,7 @@ With the text-to-speech callout, the server initiates a call to a phone number a
     <tr><td><b>endpoint</b></td><td>is a parameter inside the “destination” object. It is either the number of a PSTN endpoint, or the username for a data endpoint.</td></tr>
 </table>
 
-**dtmf** when the destination picks up, this DTMF tones will be played to the callee. Valid characters in the string are "0"-"9", "#" and "w". A "w" will render a 500 ms pause. Example: "ww1234#w#" will render a 1s pause, the DTMF tones "1", "2", "3", "4" and "#" followed by a 500 pause and finally the DTMF tone for "#". This can be used if the callout destination for instance require a conference PIN code or an extension to be entered.
+**dtmf** when the destination picks up, this DTMF tones will be played to the callee. Valid characters in the string are "0"-"9", "#" and "w". A "w" will render a 500 ms pause. Example: "ww1234#w#" will render a 1s pause, the DTMF tones "1", "2", "3", "4" and "#" followed by a 0.5s pause and finally the DTMF tone for "#". This can be used if the callout destination for instance require a conference PIN code or an extension to be entered.
 
 **domain** can be either “pstn” for PSTN endpoint or “mxp” for data (app or web) clients.
 

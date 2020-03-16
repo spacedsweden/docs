@@ -5,7 +5,7 @@ excerpt: ''
 
 ## Minimum requirements
 
-iOS 6.0 is the minimum iOS version required for using the Sinch SDK (_iOS Deployment Target_).
+We officially support the 3 latest major iOS versions. You can try older versions but there are no guarantees it will work as expected.
 
 _Note:_ The Sinch SDK library uses Automatic Reference Counting (ARC). However, it can still be used in non-ARC projects.
 

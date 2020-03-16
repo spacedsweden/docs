@@ -69,6 +69,8 @@ The types of messages that can be sent are one of the following:
 
 #### Template message
 
+Accepted language codes can be found in the [introduction](doc:whatsapp-introduction#section-supported-language-codes).
+
 JSON object parameters:
 
 | Name          | Description                                                          | JSON Type    | Default    | Constraints           | Required |
@@ -79,12 +81,12 @@ JSON object parameters:
 | params        | Parameters to inject into the template.                              | String array | N/A        | This parameter can only be used for template messages with only a body of text. | No      |
 | header_params | Parameters to inject into the header of the template.                | String array | N/A        | N/A                   | No      |
 | body_params | Parameters to inject into the body of the template.                    | String array | N/A        | N/A                   | No      |
-| media | An object describing the document or image to include in the header of the template. The objects are the same as described under Image message and Document message below, except that the `caption` and `filename` parameters are not allowed. For a message without media, set the media type to `text`.       | String array | N/A        | N/A                   | No      |
+| media | An object describing the document or image to include in the header of the template. The objects are the same as described under Image message and Document message below, except that the `caption` parameter is not allowed. Also see the note below. For a message without media, set the media type to `text`.       | String array | N/A        | N/A                   | No      |
 | ttl           | Time to live of the template message. If the receiver has not opened the template message before the time to live expires, the message will be deleted and a failed callback will be sent. The time to live can be specified in ISO-8601 Duration format or in seconds as a string. | String       | 30 Days    | See description | No      |
 
 > **Note**
 >
-> The `caption` and `filename` parameters are currently not supported for media in template messages.
+> The `caption` parameter is not supported for media in template messages. For document media, the `filename` parameter can be used to describe the file. If the `filename` parameter is not explicitly used, it will take the default value "Filename".
 
 
 ```json
@@ -189,12 +191,14 @@ JSON object parameters:
 >
 > Any media file sent through the Sinch WhatsApp API can be at most 100.0 mb
 
+Accepted content types can be found in the [introduction](doc:whatsapp-introduction#section-accepted-media-types).
+
 JSON object parameters:
 
 | Name        | Description                                                               | JSON Type    | Default    | Constraints           | Required |
 | ----------- | ------------------------------------------------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | type        | Constant value `image`                                                    | String       | N/A        | N/A                   | Yes      |
-| url         | Public url of the image file. Should be either HTTP or HTTPS link.        | String       | N/A        | `jpg` or `png`        | Yes      |
+| url         | Public url of the image file. Should be either HTTP or HTTPS link.        | String       | N/A        | Accepted Content-Type header | Yes      |
 | caption     | Optional caption that will be displayed underneath the image.             | String       | None       | N/A                   | No       |
 | provider    | Optional name of a provider to be used when trying to download the file.  | String       | None       | N/A                   | No       |
 
@@ -218,12 +222,14 @@ JSON object parameters:
 >
 > Any media file sent through the Sinch WhatsApp API can be at most 100.0 mb
 
+Accepted content types can be found in the [introduction](doc:whatsapp-introduction#section-accepted-media-types).
+
 JSON object parameters:
 
 | Name        | Description                                                               | JSON Type    | Default    | Constraints           | Required |
 | ----------- | ------------------------------------------------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | type        | Constant value `video`                                                    | String       | N/A        | N/A                   | Yes      |
-| url         | Public url of the video file (mp4). Should be either HTTP or HTTPS link.  | String       | N/A        | `mp4`                 | Yes      |
+| url         | Public url of the video file (mp4). Should be either HTTP or HTTPS link.  | String       | N/A        | Accepted Content-Type header| Yes      |
 | caption     | Optional caption that will be displayed underneath the video.             | String       | None       | N/A                   | No       |
 | provider    | Optional name of a provider to be used when trying to download the file.  | String       | None       | N/A                   | No       |
 
@@ -248,12 +254,14 @@ JSON object parameters:
 >
 > Any media file sent through the Sinch WhatsApp API can be at most 100.0 mb
 
+Accepted content types can be found in the [introduction](doc:whatsapp-introduction#section-accepted-media-types).
+
 JSON object parameters:
 
 | Name        | Description                                                               | JSON Type    | Default    | Constraints           | Required |
 | ----------- | ------------------------------------------------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | type        | Constant value `document`                                                 | String       | N/A        | N/A                   | Yes      |
-| url         | Public url of the document file. Should be either HTTP or HTTPS link.     | String       | N/A        | `pdf`, `doc` or `docx`| Yes      |
+| url         | Public url of the document file. Should be either HTTP or HTTPS link.     | String       | N/A        | Accepted Content-Type header| Yes      |
 | filename    | Optional parameter that describes the filename of the document.           | String       | None       | N/A                   | No       |
 | caption     | Optional caption that will be displayed as the document title.            | String       | None       | N/A                   | No       |
 | provider    | Optional name of a provider to be used when trying to download the file.  | String       | None       | N/A                   | No       |
@@ -279,12 +287,14 @@ JSON object parameters:
 >
 > Any media file sent through the Sinch WhatsApp API can be at most 100.0 mb
 
+Accepted content types can be found in the [introduction](doc:whatsapp-introduction#section-accepted-media-types).
+
 JSON object parameters:
 
 | Name        | Description                                                               | JSON Type    | Default    | Constraints           | Required |
 | ----------- | ------------------------------------------------------------------------- | ------------ | ---------- | --------------------- | :------: |
 | type        | Constant value `audio`                                                    | String       | N/A        | N/A                   | Yes      |
-| url         | Public url of the audio file. Should be either HTTP or HTTPS link.        | String       | N/A        | `mp3`                 | Yes      |
+| url         | Public url of the audio file. Should be either HTTP or HTTPS link.        | String       | N/A        | Accepted Content-Type header| Yes      |
 | provider    | Optional name of a provider to be used when trying to download the file.  | String       | None       | N/A                   | No       |
 
 ```json
@@ -393,3 +403,41 @@ JSON object parameters:
   }
 }
 ```
+
+#### Sticker message
+
+> **Note**
+>
+> Stickers are required to have width 512 pixels and height 512 pixels. The maximum size allowed is 100 KB.
+
+Accepted content types can be found in the [introduction](doc:whatsapp-introduction#section-accepted-media-types).
+
+JSON object parameters:
+
+| Name        | Description                                                                    | JSON Type    | Default    | Constraints                                                               | Required |
+| ----------- | ------------------------------------------------------------------------------ | ------------ | ---------- | ------------------------------------------------------------------------- | :------: |
+| type        | Constant value `sticker`.                                                      | String       | N/A        | `sticker`                                                                 | Yes      |
+| url         | Public url of the sticker file. Should be either HTTP or HTTPS link.           | String       | N/A        | Accepted Content-Type header. Must not be used in combination with `id`.  | Yes      |
+| id          | ID of a sticker. Can be found using the stickerpack management endpoints.      | String       | N/A        | Accepted Content-Type header. Must not be used in combination with `url`. | Yes      |
+| provider    | Optional name of a media provider to be used when trying to download the file. | String       | None       | Can only be used in combination with `url`, not with `id`.                | No       |
+
+> **Note**
+>
+> Only one of the parameters `url` and `id` may be used in a single request.
+
+```json
+{
+  "to": [
+    "46732001122",
+    "group:447506616260-1565342732"
+  ],
+  "message": {
+    "type": "sticker",
+    "url": "https://example.com/sticker.webp"
+  }
+}
+```
+ 
+> **Note**
+>
+> Stickers can be organized in stickerpacks. See [Stickerpack Management](doc:whatsapp-stickerpack-management) for more on this.

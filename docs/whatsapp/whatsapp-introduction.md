@@ -33,6 +33,7 @@ If no authentication header is present or if the bearer token is invalid, the AP
 
 
 ## HTTP Errors
+
 Responses with status `400 Bad Request` and `401 Unauthorized` will present a JSON object in the body explaining the error.
 It has the following structure:
 
@@ -55,3 +56,131 @@ The following WhatsApp URLs can be used by the WhatsApp API. We have servers in 
 |---------------|----------------------------------------|
 | US Production | https://us1.whatsapp.api.sinch.com     |
 | EU Production | https://eu1.whatsapp.api.sinch.com     |
+
+## Headers
+
+| Header name     |  Description                                                                     | Required           |
+| ----------------| -------------------------------------------------------------------------------- | ------------------ |
+| Authorization   | Bearer token described [above](doc:whatsapp-introduction#section-authentication) | Always             |
+| Content-Type    | Should be `application/json` when sending data through request body              | When body provided |
+
+## Accepted media types
+
+> **Note**
+>
+> Any media file sent through the Sinch WhatsApp API will be processed before it's sent to the recipient.
+> While the maximum file size for every uploaded media is 100 mb, be aware that the file can be compressed to meet the post-processing limits listed below.
+> 
+
+| Message type  |  Supported content types               |  Post-processing size limit       |
+|---------------|----------------------------------------|-----------------------------------|
+| document      | Any content type listed for other message types,<br>`text/plain`, `text/csv`, `application/pdf`, `application/msword`, `application/x-tar`, `application/rtf.0`, `application/vnd.ms-powerpoint`, <br>`application/vnd.openxmlformats-officedocument.presentationml.presentation`, <br>`application/vnd.openxmlformats-officedocument.wordprocessingml.document`, <br>`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`, <br>`application/vnd.oasis.opendocument.presentation`, <br>`application/vnd.oasis.opendocument.spreadsheet`, <br>`application/vnd.ms-excel`, <br>`application/vnd.oasis.opendocument.text`  | 100 MB |
+| image         | `image/jpeg`, `image/png`                                                     | 5 MB    |
+| audio         | `audio/aac`, `audio/mp4`, `audio/amr`, `audio/mpeg`, `audio/ogg`, `audio/opus`| 16 MB   |
+| video         | `video/mp4`, `video/3gpp`                                                     | 16 MB   |
+| sticker       | `image/webp`                                                                  | 100 KB  |
+
+## Supported language codes
+
+Following language codes are supported for template messages
+
+| Language         | Code  |
+| ---------------- | ----- |
+| Afrikaans        | af    |
+| Albanian         | sq    |
+| Arabic           | ar    |
+| Azerbaijani      | az    |
+| Bengali          | bn    |
+| Bulgarian        | bg    |
+| Catalan          | ca    |
+| Chinese (CHN)    | zh_CN |
+| Chinese (HKG)    | zh_HK |
+| Chinese (TAI)    | zh_TW |
+| Croatian         | hr    |
+| Czech            | cs    |
+| Danish           | da    |
+| Dutch            | nl    |
+| English          | en    |
+| English (UK)     | en_GB |
+| English (US)     | en_US |
+| Estonian         | et    |
+| Filipino         | fil   |
+| Finnish          | fi    |
+| French           | fr    |
+| German           | de    |
+| Greek            | el    |
+| Gujarati         | gu    |
+| Hausa            | ha    |
+| Hebrew           | he    |
+| Hindi            | hi    |
+| Hungarian        | hu    |
+| Indonesian       | id    |
+| Irish            | ga    |
+| Italian          | it    |
+| Japanese         | ja    |
+| Kannada          | kn    |
+| Kazakh           | kk    |
+| Korean           | ko    |
+| Lao              | lo    |
+| Latvian          | lv    |
+| Lithuanian       | lt    |
+| Macedonian       | mk    |
+| Malay            | ms    |
+| Malayalam        | ml    |
+| Marathi          | mr    |
+| Norwegian        | nb    |
+| Persian          | fa    |
+| Polish           | pl    |
+| Portuguese (BR)  | pt_BR |
+| Portuguese (POR) | pt_PT |
+| Punjabi          | pa    |
+| Romanian         | ro    |
+| Russian          | ru    |
+| Serbian          | sr    |
+| Slovak           | sk    |
+| Slovenian        | sl    |
+| Spanish          | es    |
+| Spanish (ARG)    | es_AR |
+| Spanish (SPA)    | es_ES |
+| Spanish (MEX)    | es_MX |
+| Swahili          | sw    |
+| Swedish          | sv    |
+| Tamil            | ta    |
+| Telugu           | te    |
+| Thai             | th    |
+| Turkish          | tr    |
+| Ukrainian        | uk    |
+| Urdu             | ur    |
+| Uzbek            | uz    |
+| Vietnamese       | vi    |
+| Zulu             | zu    |
+
+
+## Click to WhatsApp
+A business can provide a simple method via a Web Page, or embedded within a QR-Code to enable an end user to initiate a conversation through the WhatsApp Business API.
+While not a specific endpoint of the WhatsApp Business API, this method has been tested to work.
+From the businesses perspective, this avoids initial notification charges as the conversation is customer initiated.
+Furthermore, because the customer care session is immediately activated, an implicit 24 hour opt-in enables the business to reply during that time period.
+
+The business would be advised to obtain an explicit, compliant  opt-in during that initial customer care session to enable the business to initiate a future conversation using a notification (Template)
+
+Conversation start URL:
+
+`GET https://api.whatsapp.com/send`
+
+With path variable parameters:
+
+| Name    | Description                                 | Constraints                                      | Required |
+| ------- | ------------------------------------------- | ------------------------------------------------ | :------: |
+| phone   | Your WhatsApp Business Account phone number | E.164 format without '+' sign. E.g. 447537453580 | Yes      |
+| text    | Message content to be sent to your account  | Any text                                         | No       |
+
+Example to open conversation with +44 7537 453580:
+```
+https://api.whatsapp.com/send?phone=447537453580
+```
+
+Example to send message with content "Text message content" to +44 7537 453580:
+```
+https://api.whatsapp.com/send?phone=447537453580&text=Text%20message%20content
+```

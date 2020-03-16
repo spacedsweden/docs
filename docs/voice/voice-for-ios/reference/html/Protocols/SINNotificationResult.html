@@ -70,10 +70,6 @@
 		
 		<option value="//api/name/isCall">- isCall</option>
 		
-		<option value="//api/name/isMessage">- isMessage</option>
-		
-		<option value="//api/name/messageResult">- messageResult</option>
-		
 	</optgroup>
 	
 	
@@ -108,34 +104,27 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p>SINNotificationResult is used to indicate the result of calling the methods
-<a href="../Protocols/SINClient.html#//api/name/relayLocalNotification:">[SINClient relayLocalNotification:]</a> and
-<a href="../Protocols/SINClient.html#//api/name/relayRemotePushNotificationPayload:">[SINClient relayRemotePushNotificationPayload:]</a> .</p>
+						<p>SINNotificationResult is used to indicate the result of <a href="../Protocols/SINClient.html#//api/name/relayRemotePushNotification:">[SINClient relayRemotePushNotification:]</a> .</p>
 
-<p>When a user acts on a notification, either a Push Notification, or a Local
-Notification, the Sinch-specific payload which is embedded in the
+<p>When a user acts on a push notification, the Sinch-specific payload which is embedded in the
 notification may represent either an incoming call, or an incoming instant-
 message. SINNotificationResult is used to give information about what the
 notification payload represented, and can thus be used by the application to
 take appropriate actions.</p>
 
-<p>See SINCallNotificationResult and SINMessageNotificationResult for additional
-details.</p>
+<p>See SINCallNotificationResult for additional details.</p>
 
 <p>Example use:</p>
 
-<p>id<SINNotificationResult> result = [self.client relayLocalNotification:notification];</p>
+<p>id<SINNotificationResult> result = [self.client relayRemotePushNotification:payload];</p>
 
 <p>if ([result isCall] &amp;&amp; [[result callResult] isTimedOut]) {
-NSString<em> remoteUserId = [[result callResult] remoteUserId];
+NSString* remoteUserId = [[result callResult] remoteUserId];
 // present UIAlert indicating user has a missed call.
-} else if([result isMessage]){
-NSString</em> messageId = [[result messageResult] messageId];
-// show view controller that highlights the particular message
 }</p>
 
 <p>It can be especially useful for scenarios which will not result in
-the <a href="../Protocols/SINClientDelegate.html">SINClientDelegate</a> receiving any callback for an incomnig call as a result
+the <a href="../Protocols/SINClientDelegate.html">SINClientDelegate</a> receiving any callback for an incoming call as a result
 of calling the methods mentioned above. One such scenario is when a user
 have been attempted to be reached, but not acted on the notification directly.
 In that case, the notification result object can indicate that the
@@ -278,88 +267,6 @@ used for display purposes.</p>
 			
 		</div>
 	</div>
-</div><div class="section-method">
-	<a name="//api/name/isMessage" title="isMessage"></a>
-	<h3 class="method-title"><code><a href="#//api/name/isMessage">&ndash;&nbsp;isMessage</a></code>
-<span class="task-item-suffix">required method</span></h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>Indicates whether the notification is message related</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (BOOL)isMessage</code></div>
-
-		    
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">SINNotificationResult.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
-</div><div class="section-method">
-	<a name="//api/name/messageResult" title="messageResult"></a>
-	<h3 class="method-title"><code><a href="#//api/name/messageResult">&ndash;&nbsp;messageResult</a></code>
-<span class="task-item-suffix">required method</span></h3>
-
-	<div class="method-info">
-		<div class="pointy-thing"></div>
-
-		<div class="method-info-container">
-			
-			
-			<div class="method-subsection brief-description">
-				<p>If the notification is message related (<a href="#//api/name/isMessage">isMessage</a> is true), messageResult contains the notification result</p>
-			</div>
-			
-		    
-
-			<div class="method-subsection method-declaration"><code>- (id&lt;SINMessageNotificationResult&gt;)messageResult</code></div>
-
-		    
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-
-			
-			<div class="method-subsection declared-in-section">
-				<h4 class="method-subtitle">Declared In</h4>
-				<p><code class="declared-in-ref">SINNotificationResult.h</code></p>
-			</div>
-			
-			
-		</div>
-	</div>
 </div>
 						</div>
 						
@@ -373,7 +280,7 @@ used for display purposes.</p>
 				<footer>
 					<div class="footer-copyright">
 						
-						<p class="copyright">Copyright &copy; 2019 Sinch. All rights reserved. Updated: 2019-02-05</p>
+						<p class="copyright">Copyright &copy; 2019 Sinch. All rights reserved. Updated: 2019-11-06</p>
 						
 						
 						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1333)</a>.</p>

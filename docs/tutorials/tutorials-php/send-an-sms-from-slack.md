@@ -61,7 +61,7 @@ Host this file on your server, and take a note of the direct URL to the script. 
 
 ## Setting up the API
 
-We will be using the [sending SMS with PHP](doc:send-sms-in-php) script from an earlier tutorial. Set your app key and secret, and then set the receiving phone number with the `$phone_number = $pieces[0];` part of the array. This will set the number that we will be sending the message to.
+We will be using the [sending SMS with PHP](doc:send-sms-php) script from an earlier tutorial. Set your app key and secret, and then set the receiving phone number with the `$phone_number = $pieces[0];` part of the array. This will set the number that we will be sending the message to.
 
 Then set the message body with the rest of the array with `$message = array("message"=> $pieces[1]);`.
 

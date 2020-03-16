@@ -167,8 +167,7 @@ The error codes are provided in status reports according to the SMPP Protocol Sp
 | 349   | ESME EXTERNAL ERROR | Request failed                                  |                                                                                    | Permanent  |
 | 350   | ESME EXTERNAL ERROR | Invalid delivery report request                 |                                                                                    | Temporary  |
 | 360   | ESME EXTERNAL ERROR | Message queue full                              |                                                                                    | Temporary  |
-| 361   | ESME EXTERNAL ERROR | Extenal error                                   | Report to Sinch                                                                    | Temporary  |
-| 362   | ESME EXTERNAL ERROR | Extenal error                                   | Report to Sinch                                                                    | Temporary  |
+| 361   | ESME EXTERNAL ERROR | External error                                   | Report to Sinch                                                                    | Temporary  |
+| 362   | ESME EXTERNAL ERROR | External error                                   | Report to Sinch                                                                    | Temporary  |
 | 370   | ESME EXTERNAL ERROR | Cannot find information                         |                                                                                    | Temporary  |
 | 399   | ESME EXTERNAL ERROR | Unknown                                         |                                                                                    | Temporary  |
-

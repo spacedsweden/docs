@@ -2,9 +2,16 @@
 title: Media provider
 excerpt: >-
   Get to know how to use your own file storage service for sending secured media links.
+next:
+    pages:
+      - whatsapp-stickerpack-management
 ---
 You can send media files that are downloadable from URLs secured by Basic or Bearer Authentication to WhatsApp users.
 WhatsApp API allows you to have different media providers for the same type of authentication and decide which one to use on a per request basis.
+
+> **Note**
+>
+> With the 2020-03-10 release constraints for the name of a media provider are added. It is recommended to update any existing media provider configurations to use `name` parameters that meet these constraints.
 
 ### Adding/Updating a provider
 > **Note**
@@ -16,11 +23,11 @@ WhatsApp API allows you to have different media providers for the same type of a
 
 JSON object parameters:
 
-| Name    | Description                      | JSON Type    | Default    | Constraints           | Required |
-| ------- | -------------------------------- | ------------ | ---------- | --------------------- | :------: |
-| name    | Name of the provider             | String       | N/A        | N/A                   | Yes      |
-| type    | The type the provider            | String       | N/A        | `www`                 | Yes      |
-| config  | The config object                | Object       | N/A        | N/A                   | Yes      |
+| Name    | Description                      | JSON Type    | Default    | Constraints                                         | Required |
+| ------- | -------------------------------- | ------------ | ---------- | --------------------------------------------------- | :------: |
+| name    | Name of the provider             | String       | N/A        | A-Z, a-z, -, and _ allowed. 200 characters maximum. | Yes      |
+| type    | The type the provider            | String       | N/A        | `www`                                               | Yes      |
+| config  | The config object                | Object       | N/A        | N/A                                                 | Yes      |
 
 #### Response
 

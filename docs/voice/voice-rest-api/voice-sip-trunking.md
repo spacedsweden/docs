@@ -164,7 +164,7 @@ Sinch currently supports the following codecs:
 
 Encryption ensures that the call media and associated signaling remains private during transmission. Transport Layer Security (TLS) provides encryption for SIP signaling and Secure Real-time Transport Protocol (SRTP) provides encryption for call content/media packets.
 
-> Note: SRTP or secure termination trunking is not currently supported over Sinch interconnect
+> Note: SRTP is not currently supported over Sinch interconnect
 
 Specifications:
 
